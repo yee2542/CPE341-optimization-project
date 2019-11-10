@@ -57,9 +57,9 @@ class Place:
                     for fi, f in enumerate(field):
                         mapping[f] = float(0)
                 node.append(mapping)
-                print('contain', contain)
-                print('mapping',mapping)
-                print(len(node),node)
+                # print('contain', contain)
+                # print('mapping',mapping)
+                # print(len(node),node)
             self.matrix[name].append(node)
 
 
