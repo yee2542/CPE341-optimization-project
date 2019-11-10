@@ -17,7 +17,7 @@ def parse_csv(data=''):
 def parse_matrix_dist(data='', reversable=False):
     parse = data.splitlines()
     result = []
-    for i, e in enumerate(parse):
+    for e in parse:
         result.append(e.split('\t'))
     return result
 
