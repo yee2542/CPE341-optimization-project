@@ -1,5 +1,6 @@
 from pprint import pprint
 
+
 def readfile(path):
     f = open(path, "r")
     content = f.read()
@@ -20,42 +21,41 @@ def parse_matrix_dist(data='', reversible=False):
     result = []
     if reversible:
         # if parse reversible file
-        for r, e in enumerate(parse):       # append data to result first
+        for r, e in enumerate(parse):  # append data to result first
             result.append(e.split('\t'))
-        for r, re in enumerate(result):     # transpose matrix
+        for r, re in enumerate(result):  # transpose matrix
             if r > 0:
                 for c, ce in enumerate(re):
                     result[r][c] = result[c][r]
-                    if ce == '0':           # if found 0 brake transpose op
+                    if ce == '0':  # if found 0 brake transpose op
                         break
         return result
     else:
-        for e in parse:                     # split by tab
+        for e in parse:  # split by tab
             result.append(e.split('\t'))
         return result
 
 
 class Place:
     def __init__(self, _data):
-        self.data = {}
+        self.node = {}
         self.matrix = {}
         for i in _data:
-            self.data[i[0]] = {
+            self.node[i[0]] = {
                 "name": i[1],
                 "lat": i[2],
                 "lng": i[3]
             }
 
     def show_place(self):
-        print(self.data)
+        print(self.node)
 
     def show_matrix(self):
         print('show matrix')
-        # print(self.matrix)
         pprint(self.matrix)
 
-    def add_matrix(self, data, name='', field=[]):
-        if len(self.data.keys()) == 0:
+    def add_matrix(self, data, name='', field=[]):      # for adding matrix relation
+        if len(self.node.keys()) == 0:
             return Exception('must declare with place data fist')
         self.matrix[name] = []
         for e in data:
@@ -64,16 +64,16 @@ class Place:
                 contain = n.split(',')
                 mapping = {}
                 if contain[0] != '0':
-                    for fi, f in enumerate(field):
+                    for fi, f in enumerate(field):      # loop through fields for setting data struct for each node
                         mapping[f] = float(contain[fi])
                 else:
-                    for fi, f in enumerate(field):
+                    for fi, f in enumerate(field):      # if found 0 set everything in dict = 0
                         mapping[f] = float(0)
                 row.append(mapping)
-                # print('contain', contain)
-                # print('mapping',mapping)
-                # print(len(node),node)
-            self.matrix[name].append(row)
+            self.matrix[name].append(row)               # append mapping to self class
+
+    def transit_info_id(self, type_of_transit, start, stop):
+        return self
 
 
 DATA_FIELD = ['dist', 'time', 'cost']
@@ -99,6 +99,3 @@ dist_taxi = parse_matrix_dist(dist_taxi, True)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 
 node.show_matrix()
-
-
-
