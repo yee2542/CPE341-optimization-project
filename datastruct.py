@@ -1,3 +1,5 @@
+from pprint import pprint
+
 def readfile(path):
     f = open(path, "r")
     content = f.read()
@@ -49,8 +51,8 @@ class Place:
 
     def show_matrix(self):
         print('show matrix')
-        print()
-        print(self.matrix)
+        # print(self.matrix)
+        pprint(self.matrix)
 
     def add_matrix(self, data, name='', field=[]):
         if len(self.data.keys()) == 0:
@@ -74,7 +76,7 @@ class Place:
             self.matrix[name].append(row)
 
 
-
+DATA_FIELD = ['dist', 'time', 'cost']
 place = readfile('place.csv')
 place = parse_csv(place)
 # print(place)
@@ -83,15 +85,20 @@ dist_public = readfile('dist.public.txt')
 dist_public = parse_matrix_dist(dist_public)
 # print(dist_public)
 
+
 node = Place(place)
-node.add_matrix(dist_public, 'public', ['dist', 'time', 'cost'])
-node.show_matrix()
-test = node.matrix.get('public')
-print(test)
-print(test[0][2])
+node.add_matrix(dist_public, 'public', DATA_FIELD)
+# node.show_matrix()
+# test = node.matrix.get('public')
+# print(test)
+# print(test[0][2])
 # node.show_place()
 
 dist_taxi = readfile('dist.taxi.txt')
 dist_taxi = parse_matrix_dist(dist_taxi, True)
+node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
+
+node.show_matrix()
+
 
 
