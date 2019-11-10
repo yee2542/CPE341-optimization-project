@@ -1,7 +1,6 @@
 def readfile(path):
     f = open(path, "r")
     content = f.read()
-    print(content)
     return content
 
 
@@ -17,9 +16,22 @@ def parse_csv(data=''):
 def parse_matrix_dist(data='', reversable=False):
     parse = data.splitlines()
     result = []
-    for e in parse:
-        result.append(e.split('\t'))
-    return result
+    if reversable:
+        for r, e in enumerate(parse):
+            result.append(e.split('\t'))
+        for r, re in enumerate(result):
+            if r > 0:
+                for c, ce in enumerate(re):
+                    result[r][c] = result[c][r]
+                    if ce == '0':
+                        break
+
+            print('row', r, re)
+        return result
+    else :
+        for e in parse:
+            result.append(e.split('\t'))
+        return result
 
 
 class Place:
@@ -70,7 +82,7 @@ place = parse_csv(place)
 
 dist_public = readfile('dist.public.txt')
 dist_public = parse_matrix_dist(dist_public)
-print(dist_public)
+# print(dist_public)
 
 node = Place(place)
 node.add_matrix(dist_public, 'public', ['dist', 'time', 'cost'])
@@ -79,3 +91,8 @@ test = node.matrix.get('public')
 print(test)
 print(test[0][2])
 # node.show_place()
+
+dist_taxi = readfile('dist.taxi.txt')
+dist_taxi = parse_matrix_dist(dist_taxi, True)
+
+
