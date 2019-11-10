@@ -46,7 +46,7 @@ class Place:
             return Exception('must declare with place data fist')
         self.matrix[name] = []
         for e in data:
-            node = []
+            row = []
             for i, n in enumerate(e):
                 contain = n.split(',')
                 mapping = {}
@@ -56,11 +56,11 @@ class Place:
                 else:
                     for fi, f in enumerate(field):
                         mapping[f] = float(0)
-                node.append(mapping)
+                row.append(mapping)
                 # print('contain', contain)
                 # print('mapping',mapping)
                 # print(len(node),node)
-            self.matrix[name].append(node)
+            self.matrix[name].append(row)
 
 
 
