@@ -14,6 +14,14 @@ def parse_csv(data=''):
     return result[1:]  # cut header out
 
 
+def parse_matrix_dist(data='', reversable=False):
+    parse = data.splitlines()
+    result = []
+    for i, e in enumerate(parse):
+        result.append(e.split('\t'))
+    return result
+
+
 class Place:
     def __init__(self, _data):
         self.data = {}
@@ -30,8 +38,11 @@ class Place:
 
 place = readfile('place.csv')
 place = parse_csv(place)
-print(place)
+# print(place)
+
+dist_public = readfile('dist.public.txt')
+dist_public = parse_matrix_dist(dist_public)
+print(dist_public)
 
 node = Place(place)
-node.show_place()
-
+# node.show_place()
