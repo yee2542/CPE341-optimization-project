@@ -13,23 +13,22 @@ def parse_csv(data=''):
     return result[1:]  # cut header out
 
 
-def parse_matrix_dist(data='', reversable=False):
+def parse_matrix_dist(data='', reversible=False):
     parse = data.splitlines()
     result = []
-    if reversable:
-        for r, e in enumerate(parse):
+    if reversible:
+        # if parse reversible file
+        for r, e in enumerate(parse):       # append data to result first
             result.append(e.split('\t'))
-        for r, re in enumerate(result):
+        for r, re in enumerate(result):     # transpose matrix
             if r > 0:
                 for c, ce in enumerate(re):
                     result[r][c] = result[c][r]
-                    if ce == '0':
+                    if ce == '0':           # if found 0 brake transpose op
                         break
-
-            print('row', r, re)
         return result
-    else :
-        for e in parse:
+    else:
+        for e in parse:                     # split by tab
             result.append(e.split('\t'))
         return result
 
