@@ -40,12 +40,6 @@ class Place:
     def __init__(self, _data):
         self.node = []
         self.matrix = {}
-        # for i in _data:
-        #     self.node[i[0]] = {
-        #         "name": i[1],
-        #         "lat": i[2],
-        #         "lng": i[3]
-        #     }
         for i in _data:
             self.node.append({
                 "name": i[1],
@@ -79,45 +73,41 @@ class Place:
             self.matrix[name].append(row)               # append mapping to self class
 
     def transit_info_id(self, type_of_transit, start, stop):
-        data = self.matrix[type_of_transit][start][stop]
+        data = self.matrix[type_of_transit][start][stop]    # query from distance matrix
         print('from (ID) : ', start, '-->', 'dest (ID) : ', stop)
         pprint(data)
         return data
 
     def transit_info_name(self, type_of_transit, start, stop):
         data = self.matrix[type_of_transit][start][stop]
-        from_place = self.node[start].get('name')
+        from_place = self.node[start].get('name')       # map ID to node name
         dest_place = self.node[stop].get('name')
         print('from : ', from_place, '-->', 'dest : ', dest_place)
         pprint(data)
         return data
 
 
-
-
 DATA_FIELD = ['dist', 'time', 'cost']
+
+# read data node and parse (place)
 place = readfile('place.csv')
 place = parse_csv(place)
-# print(place)
 
+# read matrix and parse distance for public
 dist_public = readfile('dist.public.txt')
 dist_public = parse_matrix_dist(dist_public)
-# print(dist_public)
 
+# read matrix and parse distance for taxi
+dist_taxi = readfile('dist.taxi.txt')
+dist_taxi = parse_matrix_dist(dist_taxi, True)      # this file have to set True cause will fill a left value
 
+# initialize class
 node = Place(place)
 node.add_matrix(dist_public, 'public', DATA_FIELD)
-# node.show_matrix()
-# test = node.matrix.get('public')
-# print(test)
-# print(test[0][2])
-# node.show_place()
-
-dist_taxi = readfile('dist.taxi.txt')
-dist_taxi = parse_matrix_dist(dist_taxi, True)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 
-# node.show_matrix()
+# example
+# node.show_place()
 node.transit_info_id('taxi', 1, 4)
 node.transit_info_name('taxi', 1, 4)
-# node.show_place()
+node.transit_info_name('taxi', 4, 1)
