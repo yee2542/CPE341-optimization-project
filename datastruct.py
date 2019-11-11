@@ -113,6 +113,6 @@ node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 
 # example
 # node.show_place()
-node.transit_info_id('taxi', 1, 4)
-node.transit_info_name('taxi', 1, 4)
-node.transit_info_name('taxi', 4, 1)
+# node.transit_info_id('taxi', 1, 4)
+# node.transit_info_name('taxi', 1, 4)
+# node.transit_info_name('taxi', 4, 1)
