@@ -53,7 +53,8 @@ print(c)
 
 bestDist = 9999
 history = []
-for i in range(0, 50):
+loop = range(0, 100)
+for i in loop:
     # seed(i)
     [dist, h] = fitness(c)
     history.extend(h)
@@ -69,7 +70,7 @@ for i in range(0, 50):
 print('dist', bestDist)
 
 # print('history',len(history))
-plt.plot(range(0, 50), history, color='green', linewidth = 1, marker='x')
+plt.plot(loop, history, color='green', linewidth = 1, marker='x')
 plt.legend() 
 plt.show()
 
