@@ -38,14 +38,20 @@ def parse_matrix_dist(data='', reversible=False):
 
 class Place:
     def __init__(self, _data):
-        self.node = {}
+        self.node = []
         self.matrix = {}
+        # for i in _data:
+        #     self.node[i[0]] = {
+        #         "name": i[1],
+        #         "lat": i[2],
+        #         "lng": i[3]
+        #     }
         for i in _data:
-            self.node[i[0]] = {
+            self.node.append({
                 "name": i[1],
                 "lat": i[2],
                 "lng": i[3]
-            }
+            })
 
     def show_place(self):
         print(self.node)
@@ -55,7 +61,7 @@ class Place:
         pprint(self.matrix)
 
     def add_matrix(self, data, name='', field=[]):      # for adding matrix relation
-        if len(self.node.keys()) == 0:
+        if len(self.node) == 0:
             return Exception('must declare with place data fist')
         self.matrix[name] = []
         for e in data:
@@ -73,7 +79,20 @@ class Place:
             self.matrix[name].append(row)               # append mapping to self class
 
     def transit_info_id(self, type_of_transit, start, stop):
-        return self
+        data = self.matrix[type_of_transit][start][stop]
+        print('from (ID) : ', start, '-->', 'dest (ID) : ', stop)
+        pprint(data)
+        return data
+
+    def transit_info_name(self, type_of_transit, start, stop):
+        data = self.matrix[type_of_transit][start][stop]
+        from_place = self.node[start].get('name')
+        dest_place = self.node[stop].get('name')
+        print('from : ', from_place, '-->', 'dest : ', dest_place)
+        pprint(data)
+        return data
+
+
 
 
 DATA_FIELD = ['dist', 'time', 'cost']
@@ -98,4 +117,7 @@ dist_taxi = readfile('dist.taxi.txt')
 dist_taxi = parse_matrix_dist(dist_taxi, True)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 
-node.show_matrix()
+# node.show_matrix()
+node.transit_info_id('taxi', 1, 4)
+node.transit_info_name('taxi', 1, 4)
+# node.show_place()
