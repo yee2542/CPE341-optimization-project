@@ -16,4 +16,6 @@ node.add_matrix(dist_public, 'public', DATA_FIELD)
 
 node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
-
+node.get_place(1)
+print('eeeeeee')
+node.search_place('สยาม')
