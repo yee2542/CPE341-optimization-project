@@ -42,7 +42,7 @@ class Place:
         self.matrix = {}
         for i in _data:
             self.node.append({
-                "name": i[1],
+                "name": i[1].strip(),
                 "lat": i[2],
                 "lng": i[3]
             })
@@ -53,6 +53,18 @@ class Place:
     def show_matrix(self):
         print('show matrix')
         pprint(self.matrix)
+
+    def get_place(self, id=0):
+        data = self.node[id]
+        pprint(data)
+        return data
+
+    def search_place(self, name):
+        for e in self.node:
+            found = e.get('name')
+            if found == name:
+                pprint(e)
+                return e
 
     def add_matrix(self, data, name='', field=[]):      # for adding matrix relation
         if len(self.node) == 0:
