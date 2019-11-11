@@ -33,10 +33,9 @@ perm = [1, 2, 3, 4, 5, 6, 7, 8]
 # for i in list(perm):
 #     print(i)
 
-def fitness(d = [], itn = 0):
+def fitness(d = []):
     maxLength = len(d)
     totalDist = 0
-    itn += maxLength
     history = []
     for i, e in enumerate(d):
         if i < maxLength - 1:
@@ -44,35 +43,33 @@ def fitness(d = [], itn = 0):
         else:
             dist = node.transit_info_id('public', e, d[0]).get('dist')
         totalDist += dist
-        history.append(totalDist)
+    history.append(totalDist)
     # print('total dist', totalDist)
-    return [totalDist, history, itn]
+    return [totalDist, history]
 
 c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 shuffle(c)
 print(c)
 
 bestDist = 9999
-itn = 0
 history = []
-for i in range(0, 20):
+for i in range(0, 50):
     # seed(i)
-    [dist, h, itn] = fitness(c, itn)
+    [dist, h] = fitness(c)
     history.extend(h)
     def randSeed():
-        return .00001
+        # return .00001
+        return .5
 
-    # shuffle(c, randSeed)
-    # seed(909)
-    print(itn)
-    shuffle(c)
+    shuffle(c, randSeed)
+    # shuffle(c)
     if dist < bestDist:
         bestDist = dist
         print('found best new dist', dist)
 print('dist', bestDist)
 
 # print('history',len(history))
-plt.plot(range(0, itn), history, color='green', linewidth = 1, marker='x')
+plt.plot(range(0, 50), history, color='green', linewidth = 1, marker='x')
 plt.legend() 
 plt.show()
 
