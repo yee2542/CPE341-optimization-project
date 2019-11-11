@@ -64,16 +64,20 @@ class Place:
                 contain = n.split(',')
                 mapping = {}
                 if contain[0] != '0':
-                    for fi, f in enumerate(field):      # loop through fields for setting data struct for each node
+                    # loop through fields for setting data struct for each node
+                    for fi, f in enumerate(field):
                         mapping[f] = float(contain[fi])
                 else:
-                    for fi, f in enumerate(field):      # if found 0 set everything in dict = 0
+                    # if found 0 set everything in dict = 0
+                    for fi, f in enumerate(field):
                         mapping[f] = float(0)
                 row.append(mapping)
-            self.matrix[name].append(row)               # append mapping to self class
+            # append mapping to self class
+            self.matrix[name].append(row)
 
     def transit_info_id(self, type_of_transit, start, stop):
-        data = self.matrix[type_of_transit][start][stop]    # query from distance matrix
+        # query from distance matrix
+        data = self.matrix[type_of_transit][start][stop]
         print('from (ID) : ', start, '-->', 'dest (ID) : ', stop)
         pprint(data)
         return data
@@ -99,7 +103,8 @@ dist_public = parse_matrix_dist(dist_public)
 
 # read matrix and parse distance for taxi
 dist_taxi = readfile('dist.taxi.txt')
-dist_taxi = parse_matrix_dist(dist_taxi, True)      # this file have to set True cause will fill a left value
+# this file have to set True cause will fill a left value
+dist_taxi = parse_matrix_dist(dist_taxi, True)
 
 # initialize class
 node = Place(place)
