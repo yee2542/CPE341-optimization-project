@@ -1,6 +1,9 @@
 from itertools import permutations
 from datastruct import readfile, parse_csv, parse_matrix_dist, Place
 from random import shuffle, seed, randrange, random
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -30,37 +33,47 @@ perm = [1, 2, 3, 4, 5, 6, 7, 8]
 # for i in list(perm):
 #     print(i)
 
-def fitness(d = []):
+def fitness(d = [], itn = 0):
     maxLength = len(d)
     totalDist = 0
+    itn += maxLength
+    history = []
     for i, e in enumerate(d):
         if i < maxLength - 1:
             dist = node.transit_info_id('public', e, d[i+1]).get('dist')
         else:
             dist = node.transit_info_id('public', e, d[0]).get('dist')
         totalDist += dist
-    print('total dist', totalDist)
-    return totalDist
+        history.append(totalDist)
+    # print('total dist', totalDist)
+    return [totalDist, history, itn]
 
 c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 shuffle(c)
 print(c)
 
 bestDist = 9999
-for i in range(0, 10000):
+itn = 0
+history = []
+for i in range(0, 20):
     # seed(i)
-    dist = fitness(c)
-
+    [dist, h, itn] = fitness(c, itn)
+    history.extend(h)
     def randSeed():
         return .00001
 
     # shuffle(c, randSeed)
     # seed(909)
+    print(itn)
     shuffle(c)
     if dist < bestDist:
         bestDist = dist
         print('found best new dist', dist)
 print('dist', bestDist)
-    
+
+# print('history',len(history))
+plt.plot(range(0, itn), history, color='green', linewidth = 1, marker='x')
+plt.legend() 
+plt.show()
 
 
