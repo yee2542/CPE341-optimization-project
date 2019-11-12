@@ -47,31 +47,89 @@ def fitness(d = []):
     # print('total dist', totalDist)
     return [totalDist, history]
 
-c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+# c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+c = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 shuffle(c)
 print(c)
 
 bestDist = 9999
 history = []
-loop = range(0, 100)
+loop = range(0, 200)
 for i in loop:
-    # seed(i)
     [dist, h] = fitness(c)
     history.extend(h)
     def randSeed():
-        # return .00001
-        return .5
+        return .25
+        # return .1
 
-    shuffle(c, randSeed)
-    # shuffle(c)
+    # shuffle(c, randSeed)
+    shuffle(c)
     if dist < bestDist:
         bestDist = dist
         print('found best new dist', dist)
 print('dist', bestDist)
 
 # print('history',len(history))
-plt.plot(loop, history, color='green', linewidth = 1, marker='x')
-plt.legend() 
-plt.show()
+# plt.plot(loop, history, color='green', linewidth = 1, marker='x')
+# plt.legend() 
+# plt.show()
+# print(history[-14:])
+
+from math import exp
+
+def sa(data):
+    bestDist = 9999999
+    history = []
+    deltaE_avg = 0.0
+    n = 500
+    m = 50
+    T = 100
+    distC = fitness(data)[0]
+    # fraction reduction every cycle
+    frac = (1/100)**(1.0/(n-1.0))
+    # accept
+    na = 0.0
+    acceptSolution = []
+    
+    for i in range(n):
+        print('cycle:', n, 'with temp', T)
+        for j in range(m):
+            shuffle(data)
+            [dist, h] = fitness(data)
+            history.extend(h)
+            deltaE = abs(dist -  distC)
+            if dist < distC:
+                if (j == 0 and i == 0):
+                    deltaE_avg = deltaE
+                p =  exp(-deltaE/(deltaE_avg / T)) # probability to accept
+                # accept worse value
+                if (random() < p):
+                    accept = True
+                else:
+                    accept = False
+            # obj function is lower, automatically accept
+            else:
+                accept = True
+            
+            if accept == True:
+                # print('accept solution', dist)
+                acceptSolution.append(dist)
+                # update currently accept solution
+                distC = dist
+                # increment number of accept solution
+                na = na + 1.0
+                deltaE_avg = (deltaE_avg * (na-1.0) +  deltaE) / na
+        T = frac * T
+    # print(len(acceptSolution))
+    print('best distance', min(acceptSolution))
+    print('accept solution', acceptSolution)
+    plt.plot(range(0, len(acceptSolution)), acceptSolution, color='green', linewidth = 1, marker='x')
+    # plt.legend() 
+    plt.show()
+
+
+
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8])
+sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
 
 
