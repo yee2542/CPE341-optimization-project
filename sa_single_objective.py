@@ -75,33 +75,41 @@ print('dist', bestDist)
 # plt.show()
 # print(history[-14:])
 
-from math import exp
+from math import exp, floor
 
 def sa(data):
     bestDist = 9999999
     history = []
     deltaE_avg = 0.0
-    n = 200                 # step to lower temp
+    n = 150                 # step to lower temp
     m = 50                 # step of each neibor finding solution
-    T = 10.0
-    distC = fitness(data)[0]
+    T = 10
+    distCandidate = fitness(data)[0]
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
     # accept
+    p = 0
     na = 0.0
     acceptSolution = []
-    
+
+    def randSeed():
+        return .1
+
     for i in range(n):
         print('cycle:', n, 'with temp', T)
-        for j in range(m):
+        # print('m', m * int(floor(deltaE_avg) + 1))
+        for j in range(m * int(floor(deltaE_avg) + 1)):
+        # for j in range(m):
+            # print(seed(j))
             shuffle(data)
+            # shuffle(data, randSeed)
             [dist, h] = fitness(data)
             history.extend(h)
-            deltaE = abs(dist -  distC)
-            if dist < distC:
+            deltaE = abs(dist -  distCandidate)
+            if dist < distCandidate:
                 if (j == 0 and i == 0):
                     deltaE_avg = deltaE
-                p =  exp(-deltaE/(deltaE_avg / T)) # probability to accept
+                p = exp(-deltaE/(deltaE_avg / T)) # probability to accept
                 # accept worse value
                 if (random() < p):
                     accept = True
@@ -115,12 +123,14 @@ def sa(data):
                 # print('accept solution', dist)
                 acceptSolution.append(dist)
                 # update currently accept solution
-                distC = dist
+                distCandidate = dist
                 # increment number of accept solution
                 na = na + 1.0
                 deltaE_avg = (deltaE_avg * (na-1.0) +  deltaE) / na
         T = frac * T
+        print('prob', p)
         print('na', na)
+        print('deltaE', deltaE)
     # print(len(acceptSolution))
     print('best distance', min(acceptSolution))
     # print('accept solution', acceptSolution)
