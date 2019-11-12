@@ -81,9 +81,9 @@ def sa(data):
     bestDist = 9999999
     history = []
     deltaE_avg = 0.0
-    n = 500
-    m = 50
-    T = 100
+    n = 200                 # step to lower temp
+    m = 50                 # step of each neibor finding solution
+    T = 10.0
     distC = fitness(data)[0]
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -120,9 +120,10 @@ def sa(data):
                 na = na + 1.0
                 deltaE_avg = (deltaE_avg * (na-1.0) +  deltaE) / na
         T = frac * T
+        print('na', na)
     # print(len(acceptSolution))
     print('best distance', min(acceptSolution))
-    print('accept solution', acceptSolution)
+    # print('accept solution', acceptSolution)
     plt.plot(range(0, len(acceptSolution)), acceptSolution, color='green', linewidth = 1, marker='x')
     # plt.legend() 
     plt.show()
