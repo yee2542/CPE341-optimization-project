@@ -43,8 +43,8 @@ class Place:
         for i in _data:
             self.node.append({
                 "name": i[1].strip(),
-                "lat": i[2],
-                "lng": i[3]
+                "lat": float(i[2].strip()),
+                "lng": float(i[3].strip())
             })
 
     def show_place(self):
