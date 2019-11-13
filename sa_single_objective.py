@@ -5,6 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from visualPath import visual
+from math import exp, floor
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -22,17 +23,6 @@ node.add_matrix(dist_public, 'public', DATA_FIELD)
 
 node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
-node.get_place(1)
-node.search_place('สยาม')
-
-perm = [1, 2, 3, 4, 5, 6, 7, 8]
-# perm = permutations(perm)
-
-# print('generated permu')
-# print(list(perm))
-
-# for i in list(perm):
-#     print(i)
 
 def fitness(d = []):
     maxLength = len(d)
@@ -48,35 +38,8 @@ def fitness(d = []):
     # print('total dist', totalDist)
     return [totalDist, history]
 
-# c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-c = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-shuffle(c)
-print(c)
-
-bestDist = 9999
-history = []
-loop = range(0, 200)
-for i in loop:
-    [dist, h] = fitness(c)
-    history.extend(h)
-    def randSeed():
-        return .25
-        # return .1
-
-    # shuffle(c, randSeed)
-    shuffle(c)
-    if dist < bestDist:
-        bestDist = dist
-        print('found best new dist', dist)
-print('dist', bestDist)
-
-# print('history',len(history))
-# plt.plot(loop, history, color='green', linewidth = 1, marker='x')
-# plt.legend() 
-# plt.show()
-# print(history[-14:])
-
-from math import exp, floor
+c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+# c = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 def sa(data):
     bestDist = 9999999
@@ -136,6 +99,7 @@ def sa(data):
         print('prob', p)
         print('na', na)
         print('deltaE', deltaE)
+
     # print(len(acceptSolution))
     print('best distance', min(acceptSolutions))
     print('best solution', historySolutions[-1:])
@@ -150,7 +114,7 @@ def sa(data):
 
 
 
-# sa([0, 1, 2, 3, 4, 5, 6, 7, 8])
-sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+sa([0, 1, 2, 3, 4, 5, 6, 7, 8])
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
 
 
