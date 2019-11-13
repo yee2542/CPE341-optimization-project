@@ -4,6 +4,7 @@ from random import shuffle, seed, randrange, random
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from visualPath import visual
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -90,7 +91,8 @@ def sa(data):
     # accept
     p = 0
     na = 0.0
-    acceptSolution = []
+    acceptSolutions = []
+    historySolutions = []
 
     def randSeed():
         return .1
@@ -101,7 +103,6 @@ def sa(data):
         # for j in range(m * int(floor(deltaE_avg) + 1)):
         for j in range(m):
             # print(seed(j))
-            seed()
             shuffle(data)
             # shuffle(data, randSeed)
             [dist, h] = fitness(data)
@@ -124,7 +125,8 @@ def sa(data):
             
             if accept == True:
                 # print('accept solution', dist)
-                acceptSolution.append(dist)
+                acceptSolutions.append(dist)
+                historySolutions.append(data)
                 # update currently accept solution
                 distCandidate = dist
                 # increment number of accept solution
@@ -135,11 +137,16 @@ def sa(data):
         print('na', na)
         print('deltaE', deltaE)
     # print(len(acceptSolution))
-    print('best distance', min(acceptSolution))
+    print('best distance', min(acceptSolutions))
+    print('best solution', historySolutions[-1:])
     # print('accept solution', acceptSolution)
-    plt.plot(range(0, len(acceptSolution)), acceptSolution, color='green', linewidth = .5, marker='x')
+    plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
     # plt.legend() 
-    plt.show()
+    # plt.show()
+    # print('visualNode', visualNode)
+    # visual(historySolutions[-1:])
+    # visual([1,2,4])
+    # plt.show()
 
 
 
