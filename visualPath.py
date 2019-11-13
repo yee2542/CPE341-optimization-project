@@ -6,15 +6,15 @@ from pprint import pprint
 import networkx as nx
 from random import shuffle
 
-def parse_node(d):
-    result = []
-    for e in d:
-        result.append({
-            'name': e.get('name'),
-            'lat': e.get('lat'),
-            'lng': e.get('lng')
-        })
-    return result
+# def parse_node(d):
+#     result = []
+#     for e in d:
+#         result.append({
+#             'name': e.get('name'),
+#             'lat': e.get('lat'),
+#             'lng': e.get('lng')
+#         })
+#     return result
 
 def visual(path):
 
@@ -22,18 +22,29 @@ def visual(path):
     node = readfile('place.csv')
     node = parse_csv(node)
     node = Place(node)
-    node = parse_node(node.node)
+    # node = parse_node(node.node)
+
+    print('node', node)
 
     G = nx.Graph()
     # print('visual', path, node)
-    prevNode = node[0]
-    nodes = []
+    # prevNode = node[0]
+    # nodes = []
     fixed_pos = {}
     edges = []
 
+    # for i, e in enumerate(node.node):
+    #     positionNode = (e['lat'], e['lng'])
+    #     fixed_pos[i] = positionNode
+
     # mapped path to edges
     for i, e in enumerate(path):
-        fixed_pos[i] = (float(node[i]['lat']), float(node[i]['lng']))
+        # assign fixed node
+        positionNode = node.node[e]
+        positionNode = (positionNode['lat'], positionNode['lng'])
+        fixed_pos[e] = positionNode
+
+        # fixed_pos[i] = (float(node[i]['lat']), float(node[i]['lng']))
         if i != len(path) - 1:
             edge = (e, path[i + 1])
             edges.append(edge)
@@ -47,12 +58,12 @@ def visual(path):
     G.add_edges_from(edges)
     fixed_nodes = fixed_pos.keys()
 
-    # debugging
-    print('fixed pos')
-    pprint(fixed_pos)
+    # # debugging
+    # print('fixed pos')
+    # pprint(fixed_pos)
 
-    print('fixed node')
-    pprint(fixed_nodes)
+    # print('fixed node')
+    # pprint(fixed_nodes)
 
     pos = nx.spring_layout(G, pos=fixed_pos, fixed=fixed_nodes)
     nx.draw_networkx(G, pos)
@@ -60,8 +71,10 @@ def visual(path):
     return
 
 
-# path = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 path = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+# path = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+visual(path)
+# visual([0,1,4,3,2])
 # shuffle(path)
 # visual(path, node)
 
