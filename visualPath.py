@@ -6,12 +6,6 @@ from pprint import pprint
 import networkx as nx
 from random import shuffle
 
-
-node = readfile('place.csv')
-node = parse_csv(node)
-node = Place(node)
-
-
 def parse_node(d):
     result = []
     for e in d:
@@ -21,11 +15,6 @@ def parse_node(d):
             'lng': e.get('lng')
         })
     return result
-
-
-node = parse_node(node.node)
-print('node', node)
-
 
 def visual(path, node):
     G = nx.Graph()
@@ -63,6 +52,10 @@ def visual(path, node):
     plt.show()
     return
 
+node = readfile('place.csv')
+node = parse_csv(node)
+node = Place(node)
+node = parse_node(node.node)
 
 # path = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 path = [0, 1, 2, 3, 4, 5, 6, 7, 8]
