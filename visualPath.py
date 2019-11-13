@@ -22,20 +22,10 @@ def visual(path):
     node = readfile('place.csv')
     node = parse_csv(node)
     node = Place(node)
-    # node = parse_node(node.node)
-
-    print('node', node)
 
     G = nx.Graph()
-    # print('visual', path, node)
-    # prevNode = node[0]
-    # nodes = []
     fixed_pos = {}
     edges = []
-
-    # for i, e in enumerate(node.node):
-    #     positionNode = (e['lat'], e['lng'])
-    #     fixed_pos[i] = positionNode
 
     # mapped path to edges
     for i, e in enumerate(path):
@@ -67,13 +57,13 @@ def visual(path):
 
     pos = nx.spring_layout(G, pos=fixed_pos, fixed=fixed_nodes)
     nx.draw_networkx(G, pos)
-    plt.show()
-    return
+    # plt.show()
+    return plt
 
 
 path = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 # path = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-visual(path)
+# visual(path)
 # visual([0,1,4,3,2])
 # shuffle(path)
 # visual(path, node)

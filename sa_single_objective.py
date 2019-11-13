@@ -102,14 +102,16 @@ def sa(data):
 
     # print(len(acceptSolution))
     print('best distance', min(acceptSolutions))
-    print('best solution', historySolutions[-1:])
+    print('best solution', historySolutions[-1:][0])
     # print('accept solution', acceptSolution)
-    plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
+
+    # plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
     # plt.legend() 
     # plt.show()
     # print('visualNode', visualNode)
-    visual(historySolutions[-1:])
-    # visual([1,2,4])
+    # visual(historySolutions[-1:])
+    visualPlt = visual(historySolutions[-1:][0])
+    visualPlt.show()
     # plt.show()
 
 
