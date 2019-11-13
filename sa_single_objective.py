@@ -144,7 +144,7 @@ def sa(data):
     # plt.legend() 
     # plt.show()
     # print('visualNode', visualNode)
-    # visual(historySolutions[-1:])
+    visual(historySolutions[-1:])
     # visual([1,2,4])
     # plt.show()
 
