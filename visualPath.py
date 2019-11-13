@@ -16,7 +16,14 @@ def parse_node(d):
         })
     return result
 
-def visual(path, node):
+def visual(path):
+
+    # self manage data node
+    node = readfile('place.csv')
+    node = parse_csv(node)
+    node = Place(node)
+    node = parse_node(node.node)
+
     G = nx.Graph()
     # print('visual', path, node)
     prevNode = node[0]
@@ -52,17 +59,13 @@ def visual(path, node):
     plt.show()
     return
 
-node = readfile('place.csv')
-node = parse_csv(node)
-node = Place(node)
-node = parse_node(node.node)
 
 # path = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 path = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 # shuffle(path)
-visual(path, node)
+# visual(path, node)
 
-# visual([0, 1, 2, 3, 4, 5, 6, 7, 8])
+# visual([0, 1, 2, 3, 4])
 
 
 # plt.axis([0, 10, 0, 1])
