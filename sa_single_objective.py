@@ -105,18 +105,20 @@ def sa(data):
     print('best solution', historySolutions[-1:][0])
     # print('accept solution', acceptSolution)
 
-    # plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
+    plt.subplot(121)
+    plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
+
     # plt.legend() 
     # plt.show()
     # print('visualNode', visualNode)
-    # visual(historySolutions[-1:])
+    plt.subplot(122)
     visualPlt = visual(historySolutions[-1:][0])
     visualPlt.show()
     # plt.show()
 
 
 
-# sa([0, 1, 2, 3, 4, 5, 6, 7, 8])
-sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+sa([0, 1, 2, 3, 4, 5, 6, 7, 8])
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
 
 
