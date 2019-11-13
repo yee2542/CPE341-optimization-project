@@ -35,10 +35,15 @@ def visual(path, node):
     fixed_pos = {}
     edges = []
 
+    # mapped fixed node
+    for i, e in enumerate(node):
+        print('mapped', i, e)
+        fixed_pos[i] = (float(node[i]['lat']), float(node[i]['lng']))
+
     for i, e in enumerate(path):
         if i != len(path) - 1:
-            nextNode = node[e]
-            fixed_pos[i] = (float(nextNode.get('lat')), float(nextNode.get('lng')))
+            # nextNode = node[e]
+            # fixed_pos[i] = (float(nextNode.get('lat')), float(nextNode.get('lng')))
             edge = (e, path[i + 1])
             edges.append(edge)
         else:
@@ -62,10 +67,10 @@ def visual(path, node):
     #             'start': prev,
     #             'stop': node[0]
     #         })
-    G=nx.Graph()
+    G = nx.Graph()
     print('edges', edges)
 
-    G.add_edges_from(edges) #define G
+    G.add_edges_from(edges)  # define G
     # fixed_pos = {1:(150.3,5),2:(-1,2)}#dict with two of the positions set
     fixed_nodes = fixed_pos.keys()
     print('fixed pos')
@@ -74,8 +79,8 @@ def visual(path, node):
     print('fixed node')
     pprint(fixed_nodes)
 
-    pos = nx.spring_layout(G,pos=fixed_pos, fixed = fixed_nodes)
-    nx.draw_networkx(G,pos)
+    pos = nx.spring_layout(G, pos=fixed_pos, fixed=fixed_nodes)
+    nx.draw_networkx(G, pos)
 
     plt.show()
 
