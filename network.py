@@ -19,9 +19,10 @@ from pprint import pprint
 # plt.show()
 
 import networkx as nx
-G=nx.Graph()
-G.add_edges_from([(1,2),(2,3),(3,1),(1,4)]) #define G
-fixed_positions = {1:(150.3,5),2:(-1,2)}#dict with two of the positions set
+G = nx.Graph()
+G.add_edges_from([(1, 2), (2, 3), (3, 1), (1, 4), (5, 6)])  # define G
+# dict with two of the positions set
+fixed_positions = {1: (13, 2), 3: (1, 2), 2: (0, 0)}
 fixed_nodes = fixed_positions.keys()
 
 print('pos')
@@ -29,6 +30,6 @@ pprint(fixed_positions)
 
 print('nodes')
 pprint(fixed_nodes)
-pos = nx.spring_layout(G,pos=fixed_positions, fixed = fixed_nodes)
-nx.draw_networkx(G,pos)
+pos = nx.spring_layout(G, pos=fixed_positions, fixed=fixed_nodes)
+nx.draw_networkx(G, pos)
 plt.show()
