@@ -5,16 +5,8 @@ from datastruct import readfile, parse_csv, Place
 from pprint import pprint
 import networkx as nx
 from random import shuffle
-
-# def parse_node(d):
-#     result = []
-#     for e in d:
-#         result.append({
-#             'name': e.get('name'),
-#             'lat': e.get('lat'),
-#             'lng': e.get('lng')
-#         })
-#     return result
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 
 def visual(path):
 
@@ -34,7 +26,7 @@ def visual(path):
         positionNode = (positionNode['lat'], positionNode['lng'])
         fixed_pos[e] = positionNode
 
-        # fixed_pos[i] = (float(node[i]['lat']), float(node[i]['lng']))
+    # circular path
         if i != len(path) - 1:
             edge = (e, path[i + 1])
             edges.append(edge)
@@ -42,6 +34,7 @@ def visual(path):
             edge = (e, path[0])
             edges.append(edge)
 
+    # init graph object
     G = nx.Graph()
     print('edges', edges)
 
@@ -59,29 +52,3 @@ def visual(path):
     nx.draw_networkx(G, pos)
     # plt.show()
     return plt
-
-
-path = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-# path = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-# visual(path)
-# visual([0,1,4,3,2])
-# shuffle(path)
-# visual(path, node)
-
-# visual([0, 1, 2, 3, 4])
-
-
-# plt.axis([0, 10, 0, 1])
-
-# for i in range(10):
-#     y = np.random.random()
-#     plt.scatter(i, y)
-#     plt.pause(0.0005)
-
-# plt.show()
-
-# import plotly.graph_objects as go
-
-# import networkx as nx
-
-# G = nx.random_geometric_graph(200, 0.125)
