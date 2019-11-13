@@ -81,9 +81,9 @@ def sa(data):
     bestDist = 9999999
     history = []
     deltaE_avg = 0.0
-    n = 150                 # step to lower temp
+    n = 130                 # step to lower temp
     m = 50                 # step of each neibor finding solution
-    T = 10
+    T = 20
     distCandidate = fitness(data)[0]
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -97,15 +97,18 @@ def sa(data):
 
     for i in range(n):
         print('cycle:', n, 'with temp', T)
-        # print('m', m * int(floor(deltaE_avg) + 1))
-        for j in range(m * int(floor(deltaE_avg) + 1)):
-        # for j in range(m):
+        print('m', m * int(floor(deltaE_avg) + 1))
+        # for j in range(m * int(floor(deltaE_avg) + 1)):
+        for j in range(m):
             # print(seed(j))
+            seed()
             shuffle(data)
             # shuffle(data, randSeed)
             [dist, h] = fitness(data)
+            # print('dist', dist)
             history.extend(h)
-            deltaE = abs(dist -  distCandidate)
+            # deltaE = abs(dist -  distCandidate)
+            deltaE = abs(distCandidate - dist)
             if dist < distCandidate:
                 if (j == 0 and i == 0):
                     deltaE_avg = deltaE
@@ -134,7 +137,7 @@ def sa(data):
     # print(len(acceptSolution))
     print('best distance', min(acceptSolution))
     # print('accept solution', acceptSolution)
-    plt.plot(range(0, len(acceptSolution)), acceptSolution, color='green', linewidth = 1, marker='x')
+    plt.plot(range(0, len(acceptSolution)), acceptSolution, color='green', linewidth = .5, marker='x')
     # plt.legend() 
     plt.show()
 
