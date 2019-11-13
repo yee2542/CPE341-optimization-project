@@ -87,19 +87,21 @@ class Place:
             # append mapping to self class
             self.matrix[name].append(row)
 
-    def transit_info_id(self, type_of_transit, start, stop):
+    def transit_info_id(self, type_of_transit, start, stop, verbose=False):
         # query from distance matrix
         data = self.matrix[type_of_transit][start][stop]
-        print('from (ID) : ', start, '-->', 'dest (ID) : ', stop)
-        pprint(data)
+        if verbose:
+            print('from (ID) : ', start, '-->', 'dest (ID) : ', stop)
+            pprint(data)
         return data
 
-    def transit_info_name(self, type_of_transit, start, stop):
+    def transit_info_name(self, type_of_transit, start, stop, verbose=False):
         data = self.matrix[type_of_transit][start][stop]
         from_place = self.node[start].get('name')       # map ID to node name
         dest_place = self.node[stop].get('name')
-        print('from : ', from_place, '-->', 'dest : ', dest_place)
-        pprint(data)
+        if verbose:
+            print('from : ', from_place, '-->', 'dest : ', dest_place)
+            pprint(data)
         return data
 
 
