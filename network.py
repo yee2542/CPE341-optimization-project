@@ -20,8 +20,10 @@ from pprint import pprint
 
 import networkx as nx
 G = nx.Graph()
-G.add_edges_from([(1, 2), (2, 3), (3, 1), (1, 4), (5, 6)])  # define G
+# G.add_edges_from([(1, 2), (2, 3), (3, 1), (1, 4), (5, 6)])  # define G
+G.add_edges_from([(1, 2)])  # define G
 # dict with two of the positions set
+# fixed_positions = {1: (13, 2), 3: (1, 2), 2: (0, 0)}
 fixed_positions = {1: (13, 2), 3: (1, 2), 2: (0, 0)}
 fixed_nodes = fixed_positions.keys()
 
