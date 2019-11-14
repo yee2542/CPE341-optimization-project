@@ -96,16 +96,13 @@ def sa(data):
                 na = na + 1.0
                 deltaE_avg = (deltaE_avg * (na-1.0) +  deltaE) / na
 
-                # plot
+                # realtime plot
                 plt.subplot(121)
-                plt.pause(0.0000000000005)
-                # plt.pause(0.000001)
+                plt.pause(0.0000000005)
                 plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
-                # plt.plot(range(0, 1000), dist, color='green', linewidth = .5, marker='x')
                 plt.subplot(122)
                 plt.cla()
-                visualPlt = visual(historySolutions[-1:][0])
-                # plt.clf(visualPlt)
+                visual(historySolutions[-1:][0])
 
         T = frac * T
         print('prob', p)
@@ -117,16 +114,20 @@ def sa(data):
     print('best solution', historySolutions[-1:][0])
     # print('accept solution', acceptSolution)
 
-    # plt.subplot(121)
-    # plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
+    
 
     # plt.legend() 
     # plt.show()
     # print('visualNode', visualNode)
+
+    # plot after finish
+    # plt.subplot(121)
+    # plt.plot(range(0, len(acceptSolutions)), acceptSolutions, color='green', linewidth = .5, marker='x')
+
     # plt.subplot(122)
     # visualPlt = visual(historySolutions[-1:][0])
     # visualPlt.show()
-    plt.show()
+    # plt.show()
 
 
 
