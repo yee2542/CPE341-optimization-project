@@ -45,7 +45,7 @@ def sa(data):
     bestDist = 9999999
     history = []
     deltaE_avg = 0.0
-    n = 20                 # step to lower temp
+    n = 100                 # step to lower temp
     m = 25                 # step of each neibor finding solution
     T = 20
     distCandidate = fitness(data)[0]
@@ -128,6 +128,8 @@ def sa(data):
     # visualPlt = visual(historySolutions[-1:][0])
     # visualPlt.show()
     # plt.show()
+
+    plt.show()
 
 
 
