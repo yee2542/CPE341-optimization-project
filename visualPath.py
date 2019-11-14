@@ -36,7 +36,7 @@ def visual(path):
 
     # init graph object
     G = nx.Graph()
-    print('edges', edges)
+    # print('edges', edges)
 
     G.add_edges_from(edges)
     fixed_nodes = fixed_pos.keys()
