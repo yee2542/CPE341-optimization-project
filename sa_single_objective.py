@@ -48,9 +48,9 @@ def sa(data, realtime=False):
     bestDist = 9999999
     history = []
     deltaE_avg = 0.0
-    n = 50                 # step to lower temp
-    m = 25                 # step of each neibor finding solution
-    T = 10
+    n = 500                 # step to lower temp
+    m = 5                 # step of each neibor finding solution
+    T = 50
     distCandidate = fitness(data)[0]
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -76,12 +76,17 @@ def sa(data, realtime=False):
             history.extend(h)
             # deltaE = abs(dist -  distCandidate)
             deltaE = abs(distCandidate - dist)
-            if dist < distCandidate:
+            # if dist < distCandidate:
+            print('dist : distCandidate', dist, distCandidate)
+            if dist > distCandidate:
                 if (j == 0 and i == 0):
                     deltaE_avg = deltaE
-                p = exp(-deltaE/(deltaE_avg / T))  # probability to accept
+                # p = exp(-deltaE/(deltaE_avg / T))  # probability to accept
+                p = exp(-deltaE/ T)  # probability to accept
                 # accept worse value
-                if (random() < p):
+                r = random()
+                print('random r', r)
+                if (r < p):
                     accept = True
                 else:
                     accept = False
@@ -115,7 +120,8 @@ def sa(data, realtime=False):
         print('deltaE', deltaE)
 
     # print(len(acceptSolution))
-    print('best distance', min(acceptSolutions))
+    # print('best distance', min(acceptSolutions))
+    print('best distance', acceptSolutions[-1:])
     print('best solution', historySolutions[-1:][0])
     # print('accept solution', acceptSolution)
 
@@ -126,6 +132,7 @@ def sa(data, realtime=False):
     # plot after finish
     plt.cla()
     plt.subplot(121)
+    plt.step()
     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
              color='green', linewidth=.5, marker='x')
 
@@ -138,5 +145,6 @@ def sa(data, realtime=False):
 
 # sa([5, 6, 7, 8, 12])
 # sa([1, 3, 4, 5, 6, 7, 8])
-sa([0, 1, 2, 3, 4, 5, 6, 7, 8], True)
-# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8], True)
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], True)
+sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
