@@ -24,7 +24,6 @@ node.add_matrix(dist_public, 'public', DATA_FIELD)
 node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
 
-
 def fitness(d=[]):
     maxLength = len(d)
     totalDist = 0
@@ -39,17 +38,13 @@ def fitness(d=[]):
     # print('total dist', totalDist)
     return [totalDist, history]
 
-
 c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-# c = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-
-def sa(data, realtime=False):
-    bestDist = 9999999
+def sa(data, realtime=False, verbose=False):
     history = []
     deltaE_avg = 0.0
-    n = 500                 # step to lower temp
-    m = 5                 # step of each neibor finding solution
+    n = 300                 # step to lower temp
+    m = 10                 # step of each neibor finding solution
     T = 50
     distCandidate = fitness(data)[0]
     # fraction reduction every cycle
@@ -64,10 +59,11 @@ def sa(data, realtime=False):
         return .1
 
     for i in range(n):
-        print('cycle:', n, 'with temp', T)
-        print('m', m * int(floor(deltaE_avg) + 1))
-        # for j in range(m * int(floor(deltaE_avg) + 1)):
-        for j in range(m):
+        if verbose:
+            print('cycle:', n, 'with temp', T)
+            print('m', m * int(floor(deltaE_avg) + 1))
+        for j in range(m * int(floor(deltaE_avg) + 1)):
+            # for j in range(m):
             # print(seed(j))
             shuffle(data)
             # shuffle(data, randSeed)
@@ -76,16 +72,18 @@ def sa(data, realtime=False):
             history.extend(h)
             # deltaE = abs(dist -  distCandidate)
             deltaE = abs(distCandidate - dist)
+            if verbose:
+                print('dist : distCandidate', dist, distCandidate)
             # if dist < distCandidate:
-            print('dist : distCandidate', dist, distCandidate)
             if dist > distCandidate:
-                if (j == 0 and i == 0):
-                    deltaE_avg = deltaE
+                # if (j == 0 and i == 0):
+                #     deltaE_avg = deltaE
                 # p = exp(-deltaE/(deltaE_avg / T))  # probability to accept
-                p = exp(-deltaE/ T)  # probability to accept
+                p = exp(-deltaE / T)  # probability to accept
                 # accept worse value
                 r = random()
-                print('random r', r)
+                if verbose:
+                    print('random r', r)
                 if (r < p):
                     accept = True
                 else:
@@ -115,24 +113,18 @@ def sa(data, realtime=False):
                     visual(historySolutions[-1:][0])
 
         T = frac * T
-        print('prob', p)
-        print('na', na)
-        print('deltaE', deltaE)
+        if verbose:
+            print('prob', p)
+            print('na', na)
+            print('deltaE', deltaE)
 
     # print(len(acceptSolution))
-    # print('best distance', min(acceptSolutions))
-    print('best distance', acceptSolutions[-1:])
+    print('best distance', min(acceptSolutions))
+    print('best distance sa', acceptSolutions[-1:])
     print('best solution', historySolutions[-1:][0])
-    # print('accept solution', acceptSolution)
-
-    # plt.legend()
-    # plt.show()
-    # print('visualNode', visualNode)
 
     # plot after finish
-    plt.cla()
     plt.subplot(121)
-    plt.step()
     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
              color='green', linewidth=.5, marker='x')
 
