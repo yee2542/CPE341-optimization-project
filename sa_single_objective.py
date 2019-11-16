@@ -24,6 +24,7 @@ node.add_matrix(dist_public, 'public', DATA_FIELD)
 node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
 
+
 def fitness(d=[]):
     maxLength = len(d)
     totalDist = 0
@@ -38,14 +39,17 @@ def fitness(d=[]):
     # print('total dist', totalDist)
     return [totalDist, history]
 
+
 c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
+
 def sa(data, realtime=False, verbose=False):
-    history = []
+    # history = []
     deltaE_avg = 0.0
-    n = 300                 # step to lower temp
-    m = 10                 # step of each neibor finding solution
+    n = 10000                 # step to lower temp
+    m = 1                 # step of each neibor finding solution
     T = 50
+    Tinit = T
     distCandidate = fitness(data)[0]
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -54,6 +58,7 @@ def sa(data, realtime=False, verbose=False):
     na = 0.0
     acceptSolutions = []
     historySolutions = []
+    historyT = []
 
     def randSeed():
         return .1
@@ -62,14 +67,14 @@ def sa(data, realtime=False, verbose=False):
         if verbose:
             print('cycle:', n, 'with temp', T)
             print('m', m * int(floor(deltaE_avg) + 1))
-        for j in range(m * int(floor(deltaE_avg) + 1)):
-            # for j in range(m):
+        # for j in range(m * int(floor(deltaE_avg) + 1)):
+        for j in range(m):
             # print(seed(j))
             shuffle(data)
             # shuffle(data, randSeed)
             [dist, h] = fitness(data)
             # print('dist', dist)
-            history.extend(h)
+            # history.extend(h)
             # deltaE = abs(dist -  distCandidate)
             deltaE = abs(distCandidate - dist)
             if verbose:
@@ -104,14 +109,24 @@ def sa(data, realtime=False, verbose=False):
 
                 # realtime plot
                 if realtime:
-                    plt.subplot(121)
                     plt.pause(0.0000000005)
+                    plt.subplot(131)
+                    plt.title('distance / nth accepted solution')
                     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
-                             color='green', linewidth=.5, marker='x')
-                    plt.subplot(122)
+                             color='green', linewidth=.25, marker='x')
+
+                    plt.subplot(132)
+                    plt.title('path solution')
                     plt.cla()
                     visual(historySolutions[-1:][0])
 
+                    plt.subplot(133)
+                    plt.title('temperature / nth iteration')
+                    plt.ylim(0, Tinit)
+                    plt.plot(range(0, len(historyT)), historyT,
+                             color='red', linewidth=2)
+
+        historyT.append(T)
         T = frac * T
         if verbose:
             print('prob', p)
@@ -124,13 +139,20 @@ def sa(data, realtime=False, verbose=False):
     print('best solution', historySolutions[-1:][0])
 
     # plot after finish
-    plt.subplot(121)
+    plt.subplot(131)
+    plt.title('distance / nth accepted solution')
     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
-             color='green', linewidth=.5, marker='x')
+             color='green', linewidth=.25, marker='x')
 
-    plt.subplot(122)
+    plt.subplot(132)
+    plt.title('path solution')
     visualPlt = visual(historySolutions[-1:][0])
-    visualPlt.show()
+
+    plt.subplot(133)
+    plt.title('temperature / nth iteration')
+    plt.ylim(0, Tinit)
+    plt.plot(range(0, len(historyT)), historyT,
+             color='red', linewidth=2)
 
     plt.show()
 
