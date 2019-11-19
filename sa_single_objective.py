@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from visualPath import visual
 from math import exp, floor
+import time
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -39,13 +40,13 @@ def fitness(d=[]):
     return [totalDist, history]
 
 def sa(data, lockStart=False, realtime=False, verbose=False):
-    # history = []
     deltaE_avg = 0.0
-    n = 10000                 # step to lower temp
+    n = 50000                 # step to lower temp
     m = 1                 # step of each neibor finding solution
-    T = 50
+    T = 25
     Tinit = T
     distCandidate = fitness(data)[0]
+    
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
     # accept
@@ -127,7 +128,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False):
     # print(len(acceptSolution))
     print('best distance', min(acceptSolutions))
     print('best distance sa', acceptSolutions[-1:])
-    print('best solution', historySolutions[-1:][0])
+    print('best solution sa', historySolutions[-1:][0])
 
     # plot after finish
     plt.subplot(131)
@@ -145,7 +146,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False):
     plt.plot(range(0, len(historyT)), historyT,
              color='red', linewidth=2)
 
-    plt.show()
+    # plt.show()
+    return plt
 
 
 # sa([5, 6, 7, 8, 12])
@@ -155,4 +157,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False):
 # sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
 # sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], start=True)
 # sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=True)
-sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=False, realtime=False)
+st_time = time.time()
+saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=False)
+ed_time = time.time()
+print('exec time', ed_time - st_time, 's')
+saplot.show()
