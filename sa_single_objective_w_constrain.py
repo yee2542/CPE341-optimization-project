@@ -180,7 +180,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
 # sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=True)
 st_time = time.time()
 # saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True, realtime=False, verbose=True, limitCost=150)
-saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True,
+saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
             realtime=False, verbose=False, limitCost=40,
             typeOfTransit='taxi')
 ed_time = time.time()
