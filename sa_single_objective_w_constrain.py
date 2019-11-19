@@ -26,7 +26,7 @@ node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
 
 
-def fitness(d=[]):
+def fitness(d=[], typeOfTransit='public'):
     maxLength = len(d)
     totalDist = 0
     historyDist = []
@@ -34,11 +34,11 @@ def fitness(d=[]):
     historyCost = []
     for i, e in enumerate(d):
         if i < maxLength - 1:
-            dist = node.transit_info_id('public', e, d[i+1]).get('dist')
-            cost = node.transit_info_id('public', e, d[i+1]).get('cost')
+            dist = node.transit_info_id(typeOfTransit, e, d[i+1]).get('dist')
+            cost = node.transit_info_id(typeOfTransit, e, d[i+1]).get('cost')
         else:
-            dist = node.transit_info_id('public', e, d[0]).get('dist')
-            cost = node.transit_info_id('public', e, d[0]).get('cost')
+            dist = node.transit_info_id(typeOfTransit, e, d[0]).get('dist')
+            cost = node.transit_info_id(typeOfTransit, e, d[0]).get('cost')
         totalDist += dist
         totalCost += cost
     historyDist.append(totalDist)
@@ -46,14 +46,15 @@ def fitness(d=[]):
     return [totalDist, historyDist, totalCost, historyCost]
 
 
-def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
+def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOfTransit='public'):
+    print('type of transit', typeOfTransit)
     deltaE_avg = 0.0
-    n = 10000                 # step to lower temp
+    n = 50000                 # step to lower temp
     m = 1                 # step of each neibor finding solution
     T = 25
     Tinit = T
-    costCandidate = fitness(data)[2]
-    distCandidate = fitness(data)[0]
+    costCandidate = fitness(data, typeOfTransit)[2]
+    distCandidate = fitness(data, typeOfTransit)[0]
 
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -79,7 +80,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
             else:
                 shuffle(data)
 
-            [dist, h, cost, c] = fitness(data)
+            [dist, h, cost, c] = fitness(data, typeOfTransit)
             deltaE = abs(distCandidate - dist) + abs(costCandidate - cost)
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
@@ -180,7 +181,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
 st_time = time.time()
 # saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True, realtime=False, verbose=True, limitCost=150)
 saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True,
-            realtime=False, verbose=False, limitCost=40)
+            realtime=False, verbose=False, limitCost=40,
+            typeOfTransit='taxi')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()

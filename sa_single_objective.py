@@ -26,27 +26,29 @@ node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
 
 
-def fitness(d=[]):
+def fitness(d=[], typeOfTransit='public'):
     maxLength = len(d)
     totalDist = 0
     history = []
     for i, e in enumerate(d):
         if i < maxLength - 1:
-            dist = node.transit_info_id('public', e, d[i+1]).get('dist')
+            dist = node.transit_info_id(typeOfTransit, e, d[i+1]).get('dist')
         else:
-            dist = node.transit_info_id('public', e, d[0]).get('dist')
+            dist = node.transit_info_id(typeOfTransit, e, d[0]).get('dist')
         totalDist += dist
     history.append(totalDist)
     return [totalDist, history]
 
-def sa(data, lockStart=False, realtime=False, verbose=False):
+
+def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
+    print('type of transit', typeOfTransit)
     deltaE_avg = 0.0
     n = 50000                 # step to lower temp
     m = 1                 # step of each neibor finding solution
     T = 25
     Tinit = T
-    distCandidate = fitness(data)[0]
-    
+    distCandidate = fitness(data, typeOfTransit)[0]
+
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
     # accept
@@ -69,8 +71,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False):
                 data = data + randomPlace
             else:
                 shuffle(data)
-            
-            [dist, h] = fitness(data)
+
+            [dist, h] = fitness(data, typeOfTransit)
             deltaE = abs(distCandidate - dist)
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
@@ -158,7 +160,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False):
 # sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], start=True)
 # sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=True)
 st_time = time.time()
-saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=False)
+saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+            lockStart=True, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
