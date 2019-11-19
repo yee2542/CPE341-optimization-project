@@ -41,7 +41,6 @@ def fitness(d=[], typeOfTransit='public'):
 
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
-    print('type of transit', typeOfTransit)
     deltaE_avg = 0.0
     n = 50000                 # step to lower temp
     m = 1                 # step of each neibor finding solution
@@ -127,7 +126,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             print('na', na)
             print('deltaE', deltaE)
 
-    # print(len(acceptSolution))
+    print('type of transit', typeOfTransit)
     print('best distance', min(acceptSolutions))
     print('best distance sa', acceptSolutions[-1:])
     print('best solution sa', historySolutions[-1:][0])
