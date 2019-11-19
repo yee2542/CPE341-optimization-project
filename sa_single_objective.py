@@ -36,14 +36,9 @@ def fitness(d=[]):
             dist = node.transit_info_id('public', e, d[0]).get('dist')
         totalDist += dist
     history.append(totalDist)
-    # print('total dist', totalDist)
     return [totalDist, history]
 
-
-c = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-
-
-def sa(data, realtime=False, verbose=False):
+def sa(data, lockStart=False, realtime=False, verbose=False):
     # history = []
     deltaE_avg = 0.0
     n = 10000                 # step to lower temp
@@ -60,30 +55,26 @@ def sa(data, realtime=False, verbose=False):
     historySolutions = []
     historyT = []
 
-    def randSeed():
-        return .1
-
     for i in range(n):
         if verbose:
             print('cycle:', n, 'with temp', T)
             print('m', m * int(floor(deltaE_avg) + 1))
         # for j in range(m * int(floor(deltaE_avg) + 1)):
         for j in range(m):
-            # print(seed(j))
-            shuffle(data)
-            # shuffle(data, randSeed)
+            if lockStart:
+                randomPlace = data[1:]
+                shuffle(randomPlace)
+                data = data[0:1]
+                data = data + randomPlace
+            else:
+                shuffle(data)
+            
             [dist, h] = fitness(data)
-            # print('dist', dist)
-            # history.extend(h)
-            # deltaE = abs(dist -  distCandidate)
             deltaE = abs(distCandidate - dist)
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
-            # if dist < distCandidate:
+
             if dist > distCandidate:
-                # if (j == 0 and i == 0):
-                #     deltaE_avg = deltaE
-                # p = exp(-deltaE/(deltaE_avg / T))  # probability to accept
                 p = exp(-deltaE / T)  # probability to accept
                 # accept worse value
                 r = random()
@@ -160,5 +151,8 @@ def sa(data, realtime=False, verbose=False):
 # sa([5, 6, 7, 8, 12])
 # sa([1, 3, 4, 5, 6, 7, 8])
 # sa([0, 1, 2, 3, 4, 5, 6, 7, 8], True)
-# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], True)
-sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], True, True)
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+# sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], start=True)
+# sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=True)
+sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=False, realtime=False)
