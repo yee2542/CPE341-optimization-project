@@ -45,15 +45,16 @@ def fitness(d=[]):
     historyCost.append(totalCost)
     return [totalDist, historyDist, totalCost, historyCost]
 
+
 def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
     deltaE_avg = 0.0
-    n = 100                 # step to lower temp
+    n = 10000                 # step to lower temp
     m = 1                 # step of each neibor finding solution
     T = 25
     Tinit = T
     costCandidate = fitness(data)[2]
     distCandidate = fitness(data)[0]
-    
+
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
     # accept
@@ -77,7 +78,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
                 data = data + randomPlace
             else:
                 shuffle(data)
-            
+
             [dist, h, cost, c] = fitness(data)
             deltaE = abs(distCandidate - dist) + abs(costCandidate - cost)
             if verbose:
@@ -114,9 +115,12 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
                 if realtime:
                     plt.pause(0.0000000005)
                     plt.subplot(131)
-                    plt.title('distance / nth accepted solution')
+                    plt.title(
+                        'distance (green) & cost (orange) / nth accepted solution')
                     plt.plot(range(0, len(historyDist)), historyDist,
                              color='green', linewidth=.25, marker='x')
+                    plt.plot(range(0, len(historyCost)), historyCost,
+                             color='orange', linewidth=.25, marker='x')
 
                     plt.subplot(132)
                     plt.title('path solution')
@@ -146,9 +150,11 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
 
     # plot after finish
     plt.subplot(131)
-    plt.title('distance / nth accepted solution')
+    plt.title('distance (green) & cost (orange) / nth accepted solution')
     plt.plot(range(0, len(historyDist)), historyDist,
              color='green', linewidth=.25, marker='x')
+    plt.plot(range(0, len(historyCost)), historyCost,
+             color='orange', linewidth=.25, marker='x')
 
     plt.subplot(132)
     plt.title('path solution')
@@ -173,7 +179,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0):
 # sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=True)
 st_time = time.time()
 # saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True, realtime=False, verbose=True, limitCost=150)
-saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True, realtime=False, verbose=True, limitCost=150)
+saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True,
+            realtime=False, verbose=False, limitCost=40)
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
