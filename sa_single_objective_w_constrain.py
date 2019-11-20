@@ -192,7 +192,7 @@ st_time = time.time()
 # saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
 #             realtime=False, verbose=False, limitCost=40,
 #             typeOfTransit='taxi')
-saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
+saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
             realtime=False, verbose=False, limitCost=170,
             typeOfTransit='public')
 ed_time = time.time()
