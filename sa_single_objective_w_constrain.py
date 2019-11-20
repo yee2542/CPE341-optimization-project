@@ -48,11 +48,11 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 50000                 # step to lower temp
-    m = 1                 # step of each neibor finding solution
+    n = 10000                 # step to lower temp
+    m = 10                 # step of each neibor finding solution
     T = 25
     Tinit = T
-    costCandidate = fitness(data, typeOfTransit)[2]
+    # costCandidate = fitness(data, typeOfTransit)[2]
     distCandidate = fitness(data, typeOfTransit)[0]
 
     # fraction reduction every cycle
@@ -64,6 +64,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
     historyDist = []
     historyT = []
     historyCost = []
+    accept = False
 
     for i in range(n):
         if verbose:
@@ -80,24 +81,32 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                 shuffle(data)
 
             [dist, h, cost, c] = fitness(data, typeOfTransit)
-            deltaE = abs(distCandidate - dist) + abs(costCandidate - cost)
+            # deltaE = abs(distCandidate - dist) + abs(costCandidate - cost)
+            deltaE = abs(distCandidate - dist) + abs(limitCost - cost)
+            # print('delta e', deltaE, cost, costCandidate)
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
-                print('cost : costCandidate', cost, costCandidate)
+                print('cost : costCandidate', cost, limitCost)
 
-            if dist > distCandidate and cost > distCandidate and cost > limitCost:
-                p = exp(-deltaE / T)  # probability to accept
-                # accept worse value
-                r = random()
-                if verbose:
-                    print('random r', r)
-                if (r < p):
-                    accept = True
+            # if cost < costCandidate:
+            if cost < limitCost:
+                if dist > distCandidate:
+                    p = exp(-deltaE / T)  # probability to accept
+                    # accept worse value
+                    r = random()
+                    if verbose:
+                        print('random r', r)
+                    if (r < p):
+                        accept = True
+                    else:
+                        accept = False
+                # obj function is lower, automatically accept
                 else:
-                    accept = False
-            # obj function is lower, automatically accept
+                    accept = True
             else:
-                accept = True
+                accept = False
+            # else:
+            #     accept = False
 
             if accept == True:
                 # print('accept solution', dist)
@@ -180,9 +189,12 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
 # sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True, realtime=True)
 st_time = time.time()
 # saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8], lockStart=True, realtime=False, verbose=True, limitCost=150)
+# saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
+#             realtime=False, verbose=False, limitCost=40,
+#             typeOfTransit='taxi')
 saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
-            realtime=False, verbose=False, limitCost=40,
-            typeOfTransit='taxi')
+            realtime=False, verbose=False, limitCost=170,
+            typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
