@@ -153,6 +153,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
 
     # print(len(acceptSolution))
     # print('best distance', min(acceptSolutions))
+    print('single objective')
+    print('number of node', len(data))
     print('type of transit', typeOfTransit)
     print('best distance sa', historyDist[-1:])
     print('best solution sa', historySolutions[-1:][0])

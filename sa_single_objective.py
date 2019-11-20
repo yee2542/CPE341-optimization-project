@@ -126,8 +126,10 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             print('na', na)
             print('deltaE', deltaE)
 
+    print('single objective')
+    print('number of node', len(data))
     print('type of transit', typeOfTransit)
-    print('best distance', min(acceptSolutions))
+    # print('best distance', min(acceptSolutions))
     print('best distance sa', acceptSolutions[-1:])
     print('best solution sa', historySolutions[-1:][0])
 
@@ -161,7 +163,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
-saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+saplot = sa([0, 1, 2, 3, 4, 5, 6, 7],
             lockStart=True, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')

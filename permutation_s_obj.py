@@ -48,10 +48,12 @@ def allSolution(placeNode):
     return [bestDistance, bestSolution]
 
 
-placeNode = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+placeNode = [0, 1, 2, 3, 4, 5, 6, 7]
 st_time = time.time()
 [bestDistance, bestSolution] = allSolution(placeNode)
 ed_time = time.time()
+print('permutation')
+print('number of node', len(bestSolution))
 print('best distance', bestDistance)
 print('solution', bestSolution)
 print('exec time', ed_time - st_time, 's')
