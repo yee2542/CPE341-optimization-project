@@ -42,8 +42,8 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 50000                 # step to lower temp
-    m = 1                 # step of each neibor finding solution
+    n = 1000                 # step to lower temp
+    m = 10                 # step of each neibor finding solution
     T = 25
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
