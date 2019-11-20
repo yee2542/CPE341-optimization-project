@@ -5,7 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from visualPath import visual
-from math import exp, floor
+from math import exp, floor, log
 import time
 
 node = readfile('place.csv')
@@ -42,8 +42,8 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 1000                 # step to lower temp
-    m = 10                 # step of each neibor finding solution
+    n = 5000                 # step to lower temp
+    m = 50                 # step of each neibor finding solution
     T = 25
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -62,7 +62,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             print('cycle:', n, 'with temp', T)
             print('m', m * int(floor(deltaE_avg) + 1))
         # for j in range(m * int(floor(deltaE_avg) + 1)):
-        for j in range(m):
+        subRound = floor(abs(Tinit - T))
+        for j in range(subRound):
             if lockStart:
                 randomPlace = data[1:]
                 shuffle(randomPlace)
@@ -163,7 +164,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
-saplot = sa([0, 1, 2, 3, 4, 5, 6, 7],
+saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             lockStart=True, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
