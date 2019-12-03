@@ -44,7 +44,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     deltaE_avg = 0.0
     n = 10000                 # step to lower temp
     m = 50                 # step of each neibor finding solution
-    T = 30
+    T = 80
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
 
@@ -138,7 +138,9 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     # plot after finish
     plt.subplot(131)
     plt.title('distance / nth accepted solution')
-    plt.plot(range(0, len(acceptSolutions), 50), acceptSolutions[::50],
+    xplt = list(range(0, len(acceptSolutions),200))
+    xplt.append(len(acceptSolutions))
+    plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
              color='green', linewidth=.25, marker='x')
 
     plt.subplot(132)
