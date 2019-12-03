@@ -44,7 +44,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     deltaE_avg = 0.0
     n = 10000                 # step to lower temp
     m = 50                 # step of each neibor finding solution
-    T = 80
+    T = 25
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
 
