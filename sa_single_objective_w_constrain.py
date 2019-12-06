@@ -151,6 +151,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
 
                     plt.subplot(212)
                     plt.title('search spaces')
+                    plt.cla()
+                    plt.axvline(x=searchSpace[-1::][0][0])
                     searchSpace.sort(key=lambda e: e[0])
                     nSpace = [i[0] for i in searchSpace]
                     distSpace = [i[1] for i in searchSpace]
@@ -175,6 +177,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
     print('best cost', historyCost[-1:][0])
 
     # plot after finish
+    plt.cla()
     plt.subplot(231)
     plt.title('distance (green) & cost (orange) / nth accepted solution')
     plt.plot(range(0, len(historyDist)), historyDist,
@@ -216,7 +219,7 @@ st_time = time.time()
 #             realtime=False, verbose=False, limitCost=40,
 #             typeOfTransit='taxi')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
-            realtime=False, verbose=False, limitCost=170,
+            realtime=True, verbose=False, limitCost=170,
             typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')

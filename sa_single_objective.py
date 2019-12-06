@@ -128,6 +128,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 
                     plt.subplot(212)
                     plt.title('search spaces')
+                    plt.cla()
+                    plt.axvline(x=searchSpace[-1::][0][0])
                     searchSpace.sort(key=lambda e: e[0])
                     nSpace = [i[0] for i in searchSpace]
                     distSpace = [i[1] for i in searchSpace]
@@ -187,7 +189,7 @@ st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            lockStart=True, realtime=False, typeOfTransit='public')
+            lockStart=True, realtime=True, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
