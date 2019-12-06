@@ -35,7 +35,8 @@ def next_permutation(L):
 
 
 def nPermute(string, n):
-    string = list(string)
+    # string = list(string)
+    string = string
     new_string = []
 
     # Sort the string in lexicographically
@@ -54,11 +55,10 @@ def nPermute(string, n):
         j += 1
 
     # print string after nth iteration
-    print(''.join(new_string))
+    # print(''.join(new_string))
+    print(new_string)
 
 
-string = "1234567890"
-n = 3000000
-nPermute(string, n)
-nPermute(string, 4566)
-nPermute(string, 3400000)
+arr = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+n = 6000000
+nPermute(arr, n)
