@@ -5,8 +5,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from visualPath import visual
-from math import exp, floor, log
+from math import exp, floor, log, factorial
 import time
+from lexicograph_perm import LexicoGraphPermu
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -42,8 +43,8 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 10000                 # step to lower temp
-    m = 50                 # step of each neibor finding solution
+    n = 2000000                 # step to lower temp
+    m = 1                 # step of each neibor finding solution
     T = 25
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -57,6 +58,16 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     historySolutions = []
     historyT = []
 
+    def shuffle_list(some_list):
+        randomized_list = some_list[:]
+        while True:
+            shuffle(randomized_list)
+            for a, b in zip(some_list, randomized_list):
+                if a == b:
+                    break
+            else:
+                return randomized_list
+
     for i in range(n):
         if verbose:
             print('cycle:', n, 'with temp', T)
@@ -67,7 +78,17 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
         for j in range(subRound):
             if lockStart:
                 randomPlace = data[1:]
-                shuffle(randomPlace)
+
+                # perm = LexicoGraphPermu(randomPlace)
+                # randomPlace = perm.getNPerm(randrange(0, 100000, 1))
+                # print(randrange(0, 100000, 1))
+                # print(randomPlace)
+
+                # seed(i)
+                # shuffle(randomPlace)
+                randomPlace = shuffle_list(randomPlace)
+                # print(randomPlace)
+
                 data = data[0:1]
                 data = data + randomPlace
             else:
@@ -138,7 +159,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     # plot after finish
     plt.subplot(131)
     plt.title('distance / nth accepted solution')
-    xplt = list(range(0, len(acceptSolutions),200))
+    xplt = list(range(0, len(acceptSolutions), 200))
     xplt.append(len(acceptSolutions))
     plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
              color='green', linewidth=.25, marker='x')
