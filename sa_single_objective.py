@@ -42,7 +42,7 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 5000                 # step to lower temp
+    n = 10000                 # step to lower temp
     m = 50                 # step of each neibor finding solution
     T = 25
     Tinit = T
@@ -62,7 +62,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             print('cycle:', n, 'with temp', T)
             print('m', m * int(floor(deltaE_avg) + 1))
         # for j in range(m * int(floor(deltaE_avg) + 1)):
-        subRound = floor(abs(Tinit - T))
+        # subRound = floor(abs(Tinit - T))
+        subRound = m
         for j in range(subRound):
             if lockStart:
                 randomPlace = data[1:]
@@ -130,14 +131,16 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('single objective')
     print('number of node', len(data))
     print('type of transit', typeOfTransit)
-    # print('best distance', min(acceptSolutions))
+    print('best distance', min(acceptSolutions))
     print('best distance sa', acceptSolutions[-1:])
     print('best solution sa', historySolutions[-1:][0])
 
     # plot after finish
     plt.subplot(131)
     plt.title('distance / nth accepted solution')
-    plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
+    xplt = list(range(0, len(acceptSolutions),200))
+    xplt.append(len(acceptSolutions))
+    plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
              color='green', linewidth=.25, marker='x')
 
     plt.subplot(132)
@@ -168,4 +171,4 @@ saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             lockStart=True, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
-# saplot.show()
+saplot.show()
