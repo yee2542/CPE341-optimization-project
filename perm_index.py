@@ -1,4 +1,3 @@
-# =======================================================================
 def permutationIndex(permutation):
         index = 0
         position = 2  # position 1 is paired with factor 0 and so is skipped
