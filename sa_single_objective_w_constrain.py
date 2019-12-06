@@ -7,6 +7,8 @@ import numpy as np
 from visualPath import visual
 from math import exp, floor
 import time
+from utility import shuffle_list
+from perm_index import permutationIndex
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -49,11 +51,12 @@ def fitness(d=[], typeOfTransit='public'):
 def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOfTransit='public'):
     deltaE_avg = 0.0
     n = 5000                 # step to lower temp
-    m = 50                 # step of each neibor finding solution
+    m = 10                 # step of each neibor finding solution
     T = 25
     Tinit = T
     # costCandidate = fitness(data, typeOfTransit)[2]
     distCandidate = fitness(data, typeOfTransit)[0]
+    searchSpace = []
 
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -71,19 +74,22 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
             print('cycle:', n, 'with temp', T)
             # print('m', m * int(floor(deltaE_avg) + 1))
 
-        subRound = floor(abs(Tinit - T))
+        # subRound = floor(abs(Tinit - T))
+        seed(i)
+        subRound = m
         for j in range(subRound):
             if lockStart:
                 randomPlace = data[1:]
-                shuffle(randomPlace)
+                randomPlace = shuffle_list(randomPlace)
                 data = data[0:1]
                 data = data + randomPlace
             else:
-                shuffle(data)
+                data = shuffle_list(randomPlace)
 
             [dist, h, cost, c] = fitness(data, typeOfTransit)
             # deltaE = abs(distCandidate - dist) + abs(costCandidate - cost)
             deltaE = abs(distCandidate - dist) + abs(limitCost - cost)
+            searchSpace.append((permutationIndex(data), dist))
             # print('delta e', deltaE, cost, costCandidate)
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
@@ -124,7 +130,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                 # realtime plot
                 if realtime:
                     plt.pause(0.0000000005)
-                    plt.subplot(131)
+                    plt.subplot(231)
                     plt.title(
                         'distance (green) & cost (orange) / nth accepted solution')
                     plt.plot(range(0, len(historyDist)), historyDist,
@@ -132,16 +138,23 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                     plt.plot(range(0, len(historyCost)), historyCost,
                              color='orange', linewidth=.25, marker='x')
 
-                    plt.subplot(132)
+                    plt.subplot(232)
                     plt.title('path solution')
                     plt.cla()
                     visual(historySolutions[-1:][0])
 
-                    plt.subplot(133)
+                    plt.subplot(233)
                     plt.title('temperature / nth iteration')
                     plt.ylim(0, Tinit)
                     plt.plot(range(0, len(historyT)), historyT,
                              color='red', linewidth=2)
+
+                    plt.subplot(212)
+                    plt.title('search spaces')
+                    searchSpace.sort(key=lambda e: e[0])
+                    nSpace = [i[0] for i in searchSpace]
+                    distSpace = [i[1] for i in searchSpace]
+                    plt.scatter(nSpace, distSpace, marker=2, alpha=.15)
 
         historyT.append(T)
         T = frac * T
@@ -162,22 +175,29 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
     print('best cost', historyCost[-1:][0])
 
     # plot after finish
-    plt.subplot(131)
+    plt.subplot(231)
     plt.title('distance (green) & cost (orange) / nth accepted solution')
     plt.plot(range(0, len(historyDist)), historyDist,
              color='green', linewidth=.25, marker='x')
     plt.plot(range(0, len(historyCost)), historyCost,
              color='orange', linewidth=.25, marker='x')
 
-    plt.subplot(132)
+    plt.subplot(232)
     plt.title('path solution')
     visualPlt = visual(historySolutions[-1:][0])
 
-    plt.subplot(133)
+    plt.subplot(233)
     plt.title('temperature / nth iteration')
     plt.ylim(0, Tinit)
     plt.plot(range(0, len(historyT)), historyT,
              color='red', linewidth=2)
+
+    plt.subplot(212)
+    plt.title('search spaces')
+    searchSpace.sort(key=lambda e: e[0])
+    nSpace = [i[0] for i in searchSpace]
+    distSpace = [i[1] for i in searchSpace]
+    plt.scatter(nSpace, distSpace, marker=2, alpha=.15)
 
     # plt.show()
     return plt
@@ -200,4 +220,4 @@ saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
             typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
-# saplot.show()
+saplot.show()
