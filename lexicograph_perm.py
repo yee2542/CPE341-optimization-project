@@ -1,7 +1,3 @@
-class LexicoGraphPermu:
-    def __init__(self, _arr):
-        self.arr = _arr
-
 
 # next_permutation method implementation
 def next_permutation(L):
@@ -33,7 +29,6 @@ def next_permutation(L):
 # Function to print nth permutation
 # using next_permute()
 
-
 def nPermute(string, n):
     # string = list(string)
     string = string
@@ -55,10 +50,14 @@ def nPermute(string, n):
         j += 1
 
     # print string after nth iteration
-    # print(''.join(new_string))
     print(new_string)
 
-
 arr = [1,2,3,4,5,6,7,8,9,10,11,12,13]
-n = 6000000
-nPermute(arr, n)
+# nPermute(arr, 700003)
+
+class LexicoGraphPermu:
+    def __init__(self, _arr):
+        self.arr = _arr
+
+    def getNPerm(self, n):
+        return nPermute(self.arr, n)
