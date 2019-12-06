@@ -8,6 +8,7 @@ from visualPath import visual
 from math import exp, floor, log
 import time
 from utility import shuffle_list
+from perm_index import permutationIndex
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -43,11 +44,12 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 20000                 # step to lower temp
+    n = 5000                 # step to lower temp
     m = 10                 # step of each neibor finding solution
     T = 25
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
+    searchSpace = []
 
     # fraction reduction every cycle
     frac = (1/100)**(1.0/(n-1.0))
@@ -77,6 +79,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 
             [dist, h] = fitness(data, typeOfTransit)
             deltaE = abs(distCandidate - dist)
+            searchSpace.append((permutationIndex(data),dist))
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
 
@@ -138,22 +141,30 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('best solution sa', historySolutions[-1:][0])
 
     # plot after finish
-    plt.subplot(131)
-    plt.title('distance / nth accepted solution')
-    xplt = list(range(0, len(acceptSolutions),200))
-    xplt.append(len(acceptSolutions))
-    plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
-             color='green', linewidth=.25, marker='x')
+    # plt.subplot(131)
+    # plt.title('distance / nth accepted solution')
+    # xplt = list(range(0, len(acceptSolutions),200))
+    # xplt.append(len(acceptSolutions))
+    # plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
+    #          color='green', linewidth=.25, marker='x')
 
-    plt.subplot(132)
-    plt.title('path solution')
-    visualPlt = visual(historySolutions[-1:][0])
+    # plt.subplot(132)
+    # plt.title('path solution')
+    # visualPlt = visual(historySolutions[-1:][0])
 
-    plt.subplot(133)
-    plt.title('temperature / nth iteration')
-    plt.ylim(0, Tinit)
-    plt.plot(range(0, len(historyT)), historyT,
-             color='red', linewidth=2)
+    # plt.subplot(133)
+    # plt.title('temperature / nth iteration')
+    # plt.ylim(0, Tinit)
+    # plt.plot(range(0, len(historyT)), historyT,
+    #          color='red', linewidth=2)
+
+    # plt.subplot(222)
+    plt.title('search spaces')
+    searchSpace.sort(key=lambda e:e[0])
+    nSpace = [i[0] for i in searchSpace]
+    distSpace = [i[1] for i in searchSpace]
+    # plt.plot(nSpace, distSpace)
+    plt.scatter(nSpace, distSpace, marker=2)
 
     # plt.show()
     return plt
