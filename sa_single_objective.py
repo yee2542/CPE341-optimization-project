@@ -141,30 +141,29 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('best solution sa', historySolutions[-1:][0])
 
     # plot after finish
-    # plt.subplot(131)
-    # plt.title('distance / nth accepted solution')
-    # xplt = list(range(0, len(acceptSolutions),200))
-    # xplt.append(len(acceptSolutions))
-    # plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
-    #          color='green', linewidth=.25, marker='x')
+    plt.subplot(231)
+    plt.title('distance / nth accepted solution')
+    xplt = list(range(0, len(acceptSolutions),200))
+    xplt.append(len(acceptSolutions))
+    plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
+             color='green', linewidth=.25, marker='x')
 
-    # plt.subplot(132)
-    # plt.title('path solution')
-    # visualPlt = visual(historySolutions[-1:][0])
+    plt.subplot(232)
+    plt.title('path solution')
+    visualPlt = visual(historySolutions[-1:][0])
 
-    # plt.subplot(133)
-    # plt.title('temperature / nth iteration')
-    # plt.ylim(0, Tinit)
-    # plt.plot(range(0, len(historyT)), historyT,
-    #          color='red', linewidth=2)
+    plt.subplot(233)
+    plt.title('temperature / nth iteration')
+    plt.ylim(0, Tinit)
+    plt.plot(range(0, len(historyT)), historyT,
+             color='red', linewidth=2)
 
-    # plt.subplot(222)
+    plt.subplot(212)
     plt.title('search spaces')
     searchSpace.sort(key=lambda e:e[0])
     nSpace = [i[0] for i in searchSpace]
     distSpace = [i[1] for i in searchSpace]
-    # plt.plot(nSpace, distSpace)
-    plt.scatter(nSpace, distSpace, marker=2)
+    plt.scatter(nSpace, distSpace, marker=2, alpha=.15)
 
     # plt.show()
     return plt
