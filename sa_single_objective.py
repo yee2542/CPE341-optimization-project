@@ -43,8 +43,8 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 10000                 # step to lower temp
-    m = 50                 # step of each neibor finding solution
+    n = 20000                 # step to lower temp
+    m = 10                 # step of each neibor finding solution
     T = 25
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -66,13 +66,13 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
         # subRound = floor(abs(Tinit - T))
         subRound = m
         for j in range(subRound):
+            seed(i)
             if lockStart:
                 randomPlace = data[1:]
                 randomPlace = shuffle_list(randomPlace)
                 data = data[0:1]
                 data = data + randomPlace
             else:
-                # shuffle(data)
                 data = shuffle_list(randomPlace)
 
             [dist, h] = fitness(data, typeOfTransit)
