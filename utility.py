@@ -1,3 +1,5 @@
+from random import shuffle
+
 def circular_path(path=[]):
     edges = []
     for i, e in enumerate(path):
@@ -8,3 +10,14 @@ def circular_path(path=[]):
             edge = (e, path[0])
             edges.append(edge)
     return edges
+
+
+def shuffle_list(some_list):
+    randomized_list = some_list[:]
+    while True:
+        shuffle(randomized_list)
+        for a, b in zip(some_list, randomized_list):
+            if a == b:
+                break
+        else:
+            return randomized_list

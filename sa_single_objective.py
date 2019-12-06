@@ -7,6 +7,7 @@ import numpy as np
 from visualPath import visual
 from math import exp, floor, log
 import time
+from utility import shuffle_list
 
 node = readfile('place.csv')
 node = parse_csv(node)
@@ -67,11 +68,12 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
         for j in range(subRound):
             if lockStart:
                 randomPlace = data[1:]
-                shuffle(randomPlace)
+                randomPlace = shuffle_list(randomPlace)
                 data = data[0:1]
                 data = data + randomPlace
             else:
-                shuffle(data)
+                # shuffle(data)
+                data = shuffle_list(randomPlace)
 
             [dist, h] = fitness(data, typeOfTransit)
             deltaE = abs(distCandidate - dist)
