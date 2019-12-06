@@ -79,7 +79,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 
             [dist, h] = fitness(data, typeOfTransit)
             deltaE = abs(distCandidate - dist)
-            searchSpace.append((permutationIndex(data),dist))
+            searchSpace.append((permutationIndex(data), dist))
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
 
@@ -110,21 +110,28 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                 # realtime plot
                 if realtime:
                     plt.pause(0.0000000005)
-                    plt.subplot(131)
+                    plt.subplot(231)
                     plt.title('distance / nth accepted solution')
                     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
                              color='green', linewidth=.25, marker='x')
 
-                    plt.subplot(132)
+                    plt.subplot(232)
                     plt.title('path solution')
                     plt.cla()
                     visual(historySolutions[-1:][0])
 
-                    plt.subplot(133)
+                    plt.subplot(233)
                     plt.title('temperature / nth iteration')
                     plt.ylim(0, Tinit)
                     plt.plot(range(0, len(historyT)), historyT,
                              color='red', linewidth=2)
+
+                    plt.subplot(212)
+                    plt.title('search spaces')
+                    searchSpace.sort(key=lambda e: e[0])
+                    nSpace = [i[0] for i in searchSpace]
+                    distSpace = [i[1] for i in searchSpace]
+                    plt.scatter(nSpace, distSpace, marker=2, alpha=.15)
 
         historyT.append(T)
         T = frac * T
@@ -143,7 +150,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     # plot after finish
     plt.subplot(231)
     plt.title('distance / nth accepted solution')
-    xplt = list(range(0, len(acceptSolutions),200))
+    xplt = list(range(0, len(acceptSolutions), 200))
     xplt.append(len(acceptSolutions))
     plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
              color='green', linewidth=.25, marker='x')
@@ -160,7 +167,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 
     plt.subplot(212)
     plt.title('search spaces')
-    searchSpace.sort(key=lambda e:e[0])
+    searchSpace.sort(key=lambda e: e[0])
     nSpace = [i[0] for i in searchSpace]
     distSpace = [i[1] for i in searchSpace]
     plt.scatter(nSpace, distSpace, marker=2, alpha=.15)
