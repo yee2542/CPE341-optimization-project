@@ -156,7 +156,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                     searchSpace.sort(key=lambda e: e[0])
                     nSpace = [i[0] for i in searchSpace]
                     distSpace = [i[1] for i in searchSpace]
-                    plt.scatter(nSpace, distSpace, marker=2, alpha=.15)
+                    plt.scatter(nSpace, distSpace, marker=2, alpha=.75)
 
         historyT.append(T)
         T = frac * T
