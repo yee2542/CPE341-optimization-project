@@ -13,4 +13,4 @@ def permutationIndex(permutation):
             position += 1
 
         return index
-print(permutationIndex([2,1,5,6,7,5,4,3,4,13,9,5,1,0]))
+# print(permutationIndex([2,1,5,6,7,5,4,3,4,13,9,5,1,0]))
