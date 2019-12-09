@@ -27,7 +27,6 @@ node.add_matrix(dist_public, 'public', DATA_FIELD)
 node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
 
-
 def fitness(d=[], typeOfTransit='public'):
     maxLength = len(d)
     totalDist = 0
@@ -44,9 +43,9 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 5000                 # step to lower temp
+    n = 10000                 # step to lower temp
     m = 10                 # step of each neibor finding solution
-    T = 25
+    T = 8
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
     searchSpace = []
@@ -75,7 +74,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                 data = data[0:1]
                 data = data + randomPlace
             else:
-                data = shuffle_list(randomPlace)
+                data = shuffle_list(data)
 
             [dist, h] = fitness(data, typeOfTransit)
             deltaE = abs(distCandidate - dist)
@@ -108,9 +107,10 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                 deltaE_avg = (deltaE_avg * (na-1.0) + deltaE) / na
 
                 # realtime plot
-                if realtime:
+                if realtime and accept == True:
                     plt.pause(0.0000000005)
                     plt.subplot(231)
+                    plt.cla()
                     plt.title('distance / nth accepted solution')
                     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
                              color='green', linewidth=.25, marker='x')
@@ -121,14 +121,15 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                     visual(historySolutions[-1:][0])
 
                     plt.subplot(233)
+                    plt.cla()
                     plt.title('temperature / nth iteration')
                     plt.ylim(0, Tinit)
                     plt.plot(range(0, len(historyT)), historyT,
                              color='red', linewidth=2)
 
                     plt.subplot(212)
-                    plt.title('search spaces')
                     plt.cla()
+                    plt.title('search spaces')
                     plt.axvline(x=searchSpace[-1::][0][0])
                     searchSpace.sort(key=lambda e: e[0])
                     nSpace = [i[0] for i in searchSpace]
@@ -150,11 +151,12 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('best solution sa', historySolutions[-1:][0])
 
     # plot after finish
+    plt.cla()
     plt.subplot(231)
     plt.title('distance / nth accepted solution')
-    xplt = list(range(0, len(acceptSolutions), 200))
+    xplt = list(range(0, len(acceptSolutions), 10))
     xplt.append(len(acceptSolutions))
-    plt.plot(xplt, acceptSolutions[::200]+acceptSolutions[-1:],
+    plt.plot(xplt, acceptSolutions[::10]+acceptSolutions[-1:],
              color='green', linewidth=.25, marker='x')
 
     plt.subplot(232)
@@ -189,7 +191,7 @@ st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            lockStart=True, realtime=True, typeOfTransit='public')
+            lockStart=False, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
