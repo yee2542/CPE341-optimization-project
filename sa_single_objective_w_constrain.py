@@ -50,9 +50,9 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 5000                 # step to lower temp
+    n = 10000                 # step to lower temp
     m = 10                 # step of each neibor finding solution
-    T = 25
+    T = 8
     Tinit = T
     # costCandidate = fitness(data, typeOfTransit)[2]
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -84,7 +84,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                 data = data[0:1]
                 data = data + randomPlace
             else:
-                data = shuffle_list(randomPlace)
+                data = shuffle_list(data)
 
             [dist, h, cost, c] = fitness(data, typeOfTransit)
             # deltaE = abs(distCandidate - dist) + abs(costCandidate - cost)
@@ -131,6 +131,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                 if realtime:
                     plt.pause(0.0000000005)
                     plt.subplot(231)
+                    plt.cla()
                     plt.title(
                         'distance (green) & cost (orange) / nth accepted solution')
                     plt.plot(range(0, len(historyDist)), historyDist,
@@ -144,12 +145,14 @@ def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOf
                     visual(historySolutions[-1:][0])
 
                     plt.subplot(233)
+                    plt.cla()
                     plt.title('temperature / nth iteration')
                     plt.ylim(0, Tinit)
                     plt.plot(range(0, len(historyT)), historyT,
                              color='red', linewidth=2)
 
                     plt.subplot(212)
+                    plt.cla()
                     plt.title('search spaces')
                     plt.cla()
                     plt.axvline(x=searchSpace[-1::][0][0])
@@ -219,7 +222,7 @@ st_time = time.time()
 #             realtime=False, verbose=False, limitCost=40,
 #             typeOfTransit='taxi')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
-            realtime=True, verbose=False, limitCost=170,
+            realtime=False, verbose=False, limitCost=170,
             typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
