@@ -39,6 +39,8 @@ def fitness(d=[], typeOfTransit='public'):
     totalCost = 0
     history = []
     arrTrace = []
+    taxiPath = []
+    pubPath = []
     for i, e in enumerate(d):
         if i < maxLength - 1:
             distPub = node.transit_info_id('public', e, d[i+1]).get('dist')
@@ -66,32 +68,39 @@ def fitness(d=[], typeOfTransit='public'):
     # history.append(totalDistPub)
     # print('arr trace', arrTrace)
     minimumTotal = 0
+
     for i in arrTrace:
         pubDist = i.get('pub')[0]
         pubCost = i.get('pub')[1]
-        taxDist = i.get('taxi')[0]
-        taxCost = i.get('taxi')[1]
-        deltaDist = abs(pubDist - taxDist)
-        deltaCost = pubCost - taxCost
+        taxiDist = i.get('taxi')[0]
+        taxiCost = i.get('taxi')[1]
+        deltaDist = abs(pubDist - taxiDist)
+        deltaCost = pubCost - taxiCost
         if(deltaDist <= MAX_DELTA_KM):
             # print('compare', deltaDist)
-            if(deltaCost >= MAX_DELTA_COST and pubCost < taxCost):
+            if(deltaCost >= MAX_DELTA_COST and pubCost < taxiCost):
                 totalDist += pubDist
                 totalCost += pubCost
                 history.append({'type': 'pub', 'result': i.get('pub')})
+                pubPath.append(i.get('node'))
+
             else:
-                totalDist += taxDist
-                totalCost += taxCost
+                totalDist += taxiDist
+                totalCost += taxiCost
                 history.append({'type': 'taxi', 'result': i.get('taxi')})
+                taxiPath.append(i.get('node'))
         else:
-            if(taxCost <= MAX_COST_PER_TRIP):
-                totalDist += taxDist
-                totalCost += taxCost
+            if(taxiCost <= MAX_COST_PER_TRIP):
+                totalDist += taxiDist
+                totalCost += taxiCost
                 history.append({'type': 'taxi', 'result': i.get('taxi')})
+                taxiPath.append(i.get('node'))
             else:
                 totalDist += pubDist
                 totalCost += pubCost
-                history.append({'type': 'oub', 'result': i.get('cost')})
+                history.append({'type': 'pub', 'result': i.get('cost')})
+                pubPath.append(i.get('node'))
+                
 
 
         # print(deltaDist, deltaCost)
@@ -104,14 +113,14 @@ def fitness(d=[], typeOfTransit='public'):
     #         minimumTotal += tax
     #         history.append(tax)
     # print(history)
-    print('total', totalDist, totalCost)
-    return [totalDist, totalCost, history]
+    # print('total', totalDist, totalCost)
+    return [totalDist, totalCost, history, pubPath, taxiPath]
 
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
     # n = 10000                 # step to lower temp
-    n = 10000                 # step to lower temp
+    n = 10                 # step to lower temp
     m = 10                 # step of each neibor finding solution
     T = 8
     Tinit = T
@@ -145,7 +154,10 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             else:
                 data = shuffle_list(data)
 
-            [dist, cost, h] = fitness(data, typeOfTransit)
+            [dist, cost, h, pubPath, taxiPath] = fitness(data, typeOfTransit)
+            print('pubpath', pubPath)
+            print('taxiPath', taxiPath)
+
             # print('dist : cost', dist, cost)
             deltaE = abs(distCandidate - dist)
             searchSpace.append((permutationIndex(data), dist))
@@ -188,7 +200,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                     plt.subplot(232)
                     plt.title('path solution')
                     plt.cla()
-                    visual(historySolutions[-1:][0])
+                    visual(historySolutions[-1:][0], pubPath, taxiPath)
 
                     plt.subplot(233)
                     plt.cla()
@@ -220,6 +232,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('best distance sa', acceptSolutions[-1:])
     print('best solution sa', historySolutions[-1:][0])
     print('best cost sa', cost)
+    print('path solution', h)
 
     # plot after finish
     plt.cla()
@@ -232,7 +245,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
 
     plt.subplot(232)
     plt.title('path solution')
-    visualPlt = visual(historySolutions[-1:][0])
+    visualPlt = visual(historySolutions[-1:][0], pubPath, taxiPath)
 
     plt.subplot(233)
     plt.title('temperature / nth iteration')
@@ -265,4 +278,4 @@ saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             lockStart=False, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
-# saplot.show()
+saplot.show()
