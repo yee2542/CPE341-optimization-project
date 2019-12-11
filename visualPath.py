@@ -55,11 +55,11 @@ def visual(path, bus, taxi):
     # draw bus
     if(bus):
         nx.draw_networkx_edges(G, pos, edgelist=bus,
-                               width=8, alpha=0.5, edge_color='r')
+                               width=4, alpha=0.8, edge_color='r')
 
     # draw taxi
     if(taxi):
         nx.draw_networkx_edges(G, pos, edgelist=taxi,
-                               width=8, alpha=0.5, edge_color='g')
+                               width=4, alpha=0.8, edge_color='g')
     # plt.show()
     return plt
