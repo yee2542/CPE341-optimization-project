@@ -25,12 +25,12 @@ node = Place(node)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 node.add_matrix(dist_public, 'public', DATA_FIELD)
 
-node.transit_info_name('public', 1, 4)
-node.transit_info_name('public', 4, 1)
+# node.transit_info_name('public', 1, 4)
+# node.transit_info_name('public', 4, 1)
 
-MAX_DELTA_COST = 30
-MAX_DELTA_KM = .5
-MAX_COST = 500
+MAX_DELTA_COST = 50
+MAX_DELTA_KM = 1
+MAX_COST_PER_TRIP = 200
 
 
 def fitness(d=[], typeOfTransit='public'):
@@ -83,7 +83,17 @@ def fitness(d=[], typeOfTransit='public'):
                 totalDist += taxDist
                 totalCost += taxCost
                 history.append({'type': 'taxi', 'result': i.get('taxi')})
-                # history.append(i.get('taxi'))
+        else:
+            if(taxCost <= MAX_COST_PER_TRIP):
+                totalDist += taxDist
+                totalCost += taxCost
+                history.append({'type': 'taxi', 'result': i.get('taxi')})
+            else:
+                totalDist += pubDist
+                totalCost += pubCost
+                history.append({'type': 'oub', 'result': i.get('cost')})
+
+
         # print(deltaDist, deltaCost)
     #     pub = i.get('pub')[0]
     #     tax = i.get('tax')[0]
@@ -94,14 +104,15 @@ def fitness(d=[], typeOfTransit='public'):
     #         minimumTotal += tax
     #         history.append(tax)
     # print(history)
+    print('total', totalDist, totalCost)
     return [totalDist, totalCost, history]
 
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
     # n = 10000                 # step to lower temp
-    n = 100                 # step to lower temp
-    m = 100                 # step of each neibor finding solution
+    n = 10000                 # step to lower temp
+    m = 10                 # step of each neibor finding solution
     T = 8
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -135,7 +146,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                 data = shuffle_list(data)
 
             [dist, cost, h] = fitness(data, typeOfTransit)
-            print('dist : cost', dist, cost)
+            # print('dist : cost', dist, cost)
             deltaE = abs(distCandidate - dist)
             searchSpace.append((permutationIndex(data), dist))
             if verbose:
