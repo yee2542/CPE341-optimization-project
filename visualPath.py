@@ -9,7 +9,7 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
-def visual(path, bus=[], taxi=[]):
+def visual(path=[], bus=[], taxi=[]):
 
     # self manage data node
     node = readfile('place.csv')
@@ -37,17 +37,12 @@ def visual(path, bus=[], taxi=[]):
 
     # init graph object
     G = nx.Graph()
-    # print('edges', edges)
 
     G.add_edges_from(edges)
     fixed_nodes = fixed_pos.keys()
 
-    # # debugging
-    # print('fixed pos')
-    # pprint(fixed_pos)
-
-    # print('fixed node')
-    # pprint(fixed_nodes)
+    if(bus and taxi):
+        G.remove_edges_from(list(G.edges()))
 
     pos = nx.spring_layout(G, pos=fixed_pos, fixed=fixed_nodes)
     nx.draw_networkx(G, pos)
