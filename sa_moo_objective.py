@@ -28,16 +28,15 @@ node.add_matrix(dist_public, 'public', DATA_FIELD)
 node.transit_info_name('public', 1, 4)
 node.transit_info_name('public', 4, 1)
 
-MAX_DELTA_COST = 50
-MAX_DELTA_KM = 1.25
+MAX_DELTA_COST = 30
+MAX_DELTA_KM = .5
+MAX_COST = 500
 
 
 def fitness(d=[], typeOfTransit='public'):
     maxLength = len(d)
-    totalDistPub = 0
-    totalCostPub = 0
-    totalDistTax = 0
-    totalCostTax = 0
+    totalDist = 0
+    totalCost = 0
     history = []
     arrTrace = []
     for i, e in enumerate(d):
@@ -65,7 +64,7 @@ def fitness(d=[], typeOfTransit='public'):
         # totalDistPub += distPub
         # totalDistTax += distTax
     # history.append(totalDistPub)
-    print('arr trace', arrTrace)
+    # print('arr trace', arrTrace)
     minimumTotal = 0
     for i in arrTrace:
         pubDist = i.get('pub')[0]
@@ -75,10 +74,14 @@ def fitness(d=[], typeOfTransit='public'):
         deltaDist = abs(pubDist - taxDist)
         deltaCost = pubCost - taxCost
         if(deltaDist <= MAX_DELTA_KM):
-            print('compare', deltaDist)
+            # print('compare', deltaDist)
             if(deltaCost >= MAX_DELTA_COST and pubCost < taxCost):
+                totalDist += pubDist
+                totalCost += pubCost
                 history.append({'type': 'pub', 'result': i.get('pub')})
             else:
+                totalDist += taxDist
+                totalCost += taxCost
                 history.append({'type': 'taxi', 'result': i.get('taxi')})
                 # history.append(i.get('taxi'))
         # print(deltaDist, deltaCost)
@@ -90,14 +93,15 @@ def fitness(d=[], typeOfTransit='public'):
     #     else:
     #         minimumTotal += tax
     #         history.append(tax)
-    print(history)
-    return [totalDistPub, history]
+    # print(history)
+    return [totalDist, totalCost, history]
 
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 10000                 # step to lower temp
-    m = 10                 # step of each neibor finding solution
+    # n = 10000                 # step to lower temp
+    n = 100                 # step to lower temp
+    m = 100                 # step of each neibor finding solution
     T = 8
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -110,6 +114,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     na = 0.0
     acceptSolutions = []
     historySolutions = []
+    acceptCosts = []
     historyT = []
 
     for i in range(n):
@@ -129,7 +134,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             else:
                 data = shuffle_list(data)
 
-            [dist, h] = fitness(data, typeOfTransit)
+            [dist, cost, h] = fitness(data, typeOfTransit)
+            print('dist : cost', dist, cost)
             deltaE = abs(distCandidate - dist)
             searchSpace.append((permutationIndex(data), dist))
             if verbose:
@@ -202,6 +208,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('best distance', min(acceptSolutions))
     print('best distance sa', acceptSolutions[-1:])
     print('best solution sa', historySolutions[-1:][0])
+    print('best cost sa', cost)
 
     # plot after finish
     plt.cla()
@@ -247,4 +254,4 @@ saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             lockStart=False, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
-saplot.show()
+# saplot.show()
