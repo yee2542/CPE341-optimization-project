@@ -8,7 +8,8 @@ from random import shuffle
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
-def visual(path):
+
+def visual(path, bus, taxi):
 
     # self manage data node
     node = readfile('place.csv')
@@ -50,5 +51,15 @@ def visual(path):
 
     pos = nx.spring_layout(G, pos=fixed_pos, fixed=fixed_nodes)
     nx.draw_networkx(G, pos)
+
+    # draw bus
+    if(bus):
+        nx.draw_networkx_edges(G, pos, edgelist=bus,
+                               width=8, alpha=0.5, edge_color='r')
+
+    # draw taxi
+    if(taxi):
+        nx.draw_networkx_edges(G, pos, edgelist=taxi,
+                               width=8, alpha=0.5, edge_color='g')
     # plt.show()
     return plt
