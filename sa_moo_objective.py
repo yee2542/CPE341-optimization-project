@@ -25,12 +25,13 @@ node = Place(node)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 node.add_matrix(dist_public, 'public', DATA_FIELD)
 
-# node.transit_info_name('public', 1, 4)
-# node.transit_info_name('public', 4, 1)
-
 MAX_DELTA_COST = 50
 MAX_DELTA_KM = 1
 MAX_COST_PER_TRIP = 200
+
+CONST_N = 10000
+CONST_M = 10
+CONST_T = 8
 
 
 def fitness(d=[], typeOfTransit='public'):
@@ -100,8 +101,6 @@ def fitness(d=[], typeOfTransit='public'):
                 totalCost += pubCost
                 history.append({'type': 'pub', 'result': i.get('pub')})
                 pubPath.append(i.get('node'))
-                
-
 
         # print(deltaDist, deltaCost)
     #     pub = i.get('pub')[0]
@@ -119,10 +118,9 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='public'):
     deltaE_avg = 0.0
-    # n = 10000                 # step to lower temp
-    n = 10                 # step to lower temp
-    m = 10                 # step of each neibor finding solution
-    T = 8
+    n = CONST_N                 # step to lower temp
+    m = CONST_M                 # step of each neibor finding solution
+    T = CONST_T
     Tinit = T
     distCandidate = fitness(data, typeOfTransit)[0]
     searchSpace = []
@@ -155,14 +153,14 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                 data = shuffle_list(data)
 
             [dist, cost, h, pubPath, taxiPath] = fitness(data, typeOfTransit)
-            print('pubpath', pubPath)
-            print('taxiPath', taxiPath)
 
-            # print('dist : cost', dist, cost)
             deltaE = abs(distCandidate - dist)
             searchSpace.append((permutationIndex(data), dist))
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
+                print('cost : ', cost)
+                print('pubpath', pubPath)
+                print('taxiPath', taxiPath)
 
             if dist > distCandidate:
                 p = exp(-deltaE / T)  # probability to accept
