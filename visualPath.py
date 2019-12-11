@@ -9,7 +9,7 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
-def visual(path, bus, taxi):
+def visual(path, bus=[], taxi=[]):
 
     # self manage data node
     node = readfile('place.csv')
