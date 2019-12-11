@@ -98,7 +98,7 @@ def fitness(d=[], typeOfTransit='public'):
             else:
                 totalDist += pubDist
                 totalCost += pubCost
-                history.append({'type': 'pub', 'result': i.get('cost')})
+                history.append({'type': 'pub', 'result': i.get('pub')})
                 pubPath.append(i.get('node'))
                 
 
