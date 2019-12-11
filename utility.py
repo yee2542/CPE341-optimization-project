@@ -1,5 +1,6 @@
 from random import shuffle
 
+
 def circular_path(path=[]):
     edges = []
     for i, e in enumerate(path):
@@ -21,3 +22,13 @@ def shuffle_list(some_list):
                 break
         else:
             return randomized_list
+
+
+def generateTypePath(n=1, sym=[0], ns=[1]):
+    arr = []
+    # for i in range(n):
+    for ix, e in enumerate(sym):
+            for n in range(ns[ix]):
+                arr.append(e)
+
+    return arr
