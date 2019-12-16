@@ -44,4 +44,16 @@ def gerateMultiTypeSearchSpace(data, h, fitness):
             arr.append(-2)
         arr.append(d)
     return arr
-    
+
+def prettierMMO(arr=[{}]):
+    typeT = []
+    dist = []
+    cost = []
+    for e in arr:
+        typeT.append(e.get('type'))
+        dist.append(e.get('result')[0])
+        cost.append(e.get('result')[1])
+    print('type : ',typeT)
+    print('dist : ',dist)
+    print('cost : ',cost)
+

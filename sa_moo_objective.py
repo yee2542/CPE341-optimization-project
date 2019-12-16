@@ -7,7 +7,7 @@ import numpy as np
 from visualPath import visual
 from math import exp, floor, log
 import time
-from utility import shuffle_list, gerateMultiTypeSearchSpace
+from utility import shuffle_list, gerateMultiTypeSearchSpace, prettierMMO
 from perm_index import permutationIndex
 
 
@@ -239,9 +239,10 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     print('type of transit', typeOfTransit)
     print('best distance', min(acceptSolutions))
     print('best distance sa', acceptSolutions[-1:])
-    print('best solution sa', historySolutions[-1:][0])
     print('best cost sa', cost)
-    print('path solution', h)
+    # print('path solution', h)
+    print('best solution sa', historySolutions[-1:][0])
+    prettierMMO(h)
 
     # plot after finish
     plt.cla()
