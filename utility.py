@@ -32,3 +32,16 @@ def generateTypePath(n=1, sym=[0], ns=[1]):
                 arr.append(e)
 
     return arr
+
+def gerateMultiTypeSearchSpace(data, h, fitness):
+    arr = []
+    for i, e in enumerate(h):
+        t = e.get('type')
+        d = data[i]
+        if t == 'pub':
+            arr.append(-1)
+        else:
+            arr.append(-2)
+        arr.append(d)
+    return arr
+    

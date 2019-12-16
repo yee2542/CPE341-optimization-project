@@ -7,7 +7,7 @@ import numpy as np
 from visualPath import visual
 from math import exp, floor, log
 import time
-from utility import shuffle_list
+from utility import shuffle_list, gerateMultiTypeSearchSpace
 from perm_index import permutationIndex
 
 
@@ -24,6 +24,8 @@ DATA_FIELD = ['dist', 'time', 'cost']
 node = Place(node)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 node.add_matrix(dist_public, 'public', DATA_FIELD)
+
+REALTIME = False
 
 MAX_DELTA_COST = 50
 MAX_DELTA_KM = 1
@@ -156,7 +158,11 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
             [dist, cost, h, pubPath, taxiPath] = fitness(data, typeOfTransit)
 
             deltaE = abs(distCandidate - dist)
-            searchSpace.append((permutationIndex(data), dist))
+            multiSearchSpace = gerateMultiTypeSearchSpace(data, h, dist)
+            # debugging
+            # print('multi search sapce', multiSearchSpace)
+            # print(permutationIndex(multiSearchSpace), gerateMultiTypeSearchSpace(data, h, dist))
+            searchSpace.append((permutationIndex(multiSearchSpace), dist))
             if verbose:
                 print('dist : distCandidate', dist, distCandidate)
                 print('cost : ', cost)
@@ -214,6 +220,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                     plt.subplot(212)
                     plt.cla()
                     plt.title('search spaces')
+
                     plt.axvline(x=searchSpace[-1::][0][0])
                     searchSpace.sort(key=lambda e: e[0])
                     nSpace = [i[0] for i in searchSpace]
@@ -279,7 +286,7 @@ st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            lockStart=True, realtime=False, typeOfTransit='public')
+            lockStart=True, realtime=REALTIME, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
