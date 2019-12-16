@@ -10,6 +10,12 @@ import time
 from utility import shuffle_list
 from perm_index import permutationIndex
 
+MAX_TRIP_COST = 170
+
+CONST_N = 10000
+CONST_M = 10
+CONST_T = 8
+
 node = readfile('place.csv')
 node = parse_csv(node)
 
@@ -50,9 +56,9 @@ def fitness(d=[], typeOfTransit='public'):
 
 def sa(data, lockStart=False, realtime=False, verbose=False, limitCost=0, typeOfTransit='public'):
     deltaE_avg = 0.0
-    n = 10000                 # step to lower temp
-    m = 10                 # step of each neibor finding solution
-    T = 8
+    n = CONST_N                 # step to lower temp
+    m = CONST_M                 # step of each neibor finding solution
+    T = CONST_T
     Tinit = T
     # costCandidate = fitness(data, typeOfTransit)[2]
     distCandidate = fitness(data, typeOfTransit)[0]
@@ -222,7 +228,7 @@ st_time = time.time()
 #             realtime=False, verbose=False, limitCost=40,
 #             typeOfTransit='taxi')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
-            realtime=False, verbose=False, limitCost=170,
+            realtime=False, verbose=False, limitCost=MAX_TRIP_COST,
             typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
