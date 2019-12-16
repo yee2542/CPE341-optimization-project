@@ -134,6 +134,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     historySolutions = []
     acceptCosts = []
     historyT = []
+    historyCost = []
 
     for i in range(n):
         if verbose:
@@ -180,6 +181,7 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                 # print('accept solution', dist)
                 acceptSolutions.append(dist)
                 historySolutions.append(data)
+                historyCost.append(cost)
                 # update currently accept solution
                 distCandidate = dist
                 # increment number of accept solution
@@ -194,6 +196,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
                     plt.title('distance / nth accepted solution')
                     plt.plot(range(0, len(acceptSolutions)), acceptSolutions,
                              color='green', linewidth=.25, marker='x')
+                    plt.plot(range(0, len(historyCost)), historyCost,
+                             color='orange', linewidth=.25, marker='x')
 
                     plt.subplot(232)
                     plt.title('path solution')
@@ -240,6 +244,8 @@ def sa(data, lockStart=False, realtime=False, verbose=False, typeOfTransit='publ
     xplt.append(len(acceptSolutions))
     plt.plot(xplt, acceptSolutions[::10]+acceptSolutions[-1:],
              color='green', linewidth=.25, marker='x')
+    # plt.plot(range(0, len(historyCost)), historyCost,
+    #          color='orange', linewidth=.25, marker='x')
 
     plt.subplot(232)
     plt.title('path solution')
@@ -273,7 +279,7 @@ st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            lockStart=False, realtime=False, typeOfTransit='public')
+            lockStart=True, realtime=False, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
