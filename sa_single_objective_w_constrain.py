@@ -10,6 +10,9 @@ import time
 from utility import shuffle_list
 from perm_index import permutationIndex
 
+REALTIME = True
+LOCK_START = True
+
 MAX_TRIP_COST = 170
 
 CONST_N = 10000
@@ -227,8 +230,8 @@ st_time = time.time()
 # saplot = sa([1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
 #             realtime=False, verbose=False, limitCost=40,
 #             typeOfTransit='taxi')
-saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=True,
-            realtime=False, verbose=False, limitCost=MAX_TRIP_COST,
+saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], lockStart=LOCK_START,
+            realtime=REALTIME, verbose=False, limitCost=MAX_TRIP_COST,
             typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')

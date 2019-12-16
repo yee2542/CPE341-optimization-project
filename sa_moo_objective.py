@@ -25,7 +25,8 @@ node = Place(node)
 node.add_matrix(dist_taxi, 'taxi', DATA_FIELD)
 node.add_matrix(dist_public, 'public', DATA_FIELD)
 
-REALTIME = False
+REALTIME = True
+LOCK_START = True
 
 MAX_DELTA_COST = 50
 MAX_DELTA_KM = 1
@@ -287,7 +288,7 @@ st_time = time.time()
 # saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 #             lockStart=True, realtime=False, typeOfTransit='public')
 saplot = sa([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-            lockStart=True, realtime=REALTIME, typeOfTransit='public')
+            lockStart=LOCK_START, realtime=REALTIME, typeOfTransit='public')
 ed_time = time.time()
 print('exec time', ed_time - st_time, 's')
 saplot.show()
